@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scorecard KPI — Compras Rappi</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0e0e0e;--bg2:#181818;--bg3:#222;--brd:#252525;--rappi:#FF441B;--rappi-dim:#3a1208;--txt:#f0f0f0;--txt2:#999;--txt3:#555;--ok:#4ade80;--ok-bg:#052e16;--warn:#fbbf24;--warn-bg:#2d1f00;--crit:#f87171;--crit-bg:#2d0a0a}
+body{background:var(--bg);color:var(--txt);font-family:Arial,sans-serif;font-size:13px;min-height:100vh}
+.wrap{padding:16px 18px;max-width:1200px;margin:0 auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--brd);margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.logo-row{display:flex;align-items:center;gap:10px}
+.rappi-badge{background:var(--rappi);color:#fff;font-size:11px;font-weight:500;padding:3px 11px;border-radius:20px}
+.top-title{font-size:15px;font-weight:500}
+.top-meta{font-size:11px;color:var(--txt2)}
+.tabs{display:flex;gap:2px;margin-bottom:16px;background:var(--bg2);border:1px solid var(--brd);padding:3px;border-radius:10px;width:fit-content}
+.tab{padding:5px 16px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:500;color:var(--txt2);border:none;background:transparent}
+.tab.active{background:var(--rappi);color:#fff}
+.section{display:none}.section.active{display:block}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:10px;margin-bottom:14px}
+.kcard{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:14px 14px 12px;position:relative;overflow:hidden}
+.kcard::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--brd)}
+.kcard.ok::after{background:var(--ok)}.kcard.warn::after{background:var(--warn)}.kcard.crit::after{background:var(--rappi)}
+.kcard-lbl{font-size:10px;color:var(--txt2);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px}
+.kcard-val{font-size:23px;font-weight:500;line-height:1.1}
+.kcard-val.ok{color:var(--ok)}.kcard-val.warn{color:var(--warn)}.kcard-val.crit{color:var(--rappi)}.kcard-val.none{color:var(--txt3);font-size:14px}
+.kcard-sub{font-size:10px;color:var(--txt3);margin-top:4px}
+.pill-row{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.pill{display:flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:11px;background:var(--bg2);border:1px solid var(--brd)}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;display:inline-block}
+.d-ok{background:var(--ok)}.d-warn{background:var(--warn)}.d-crit{background:var(--rappi)}.d-none{background:var(--txt3)}
+.sec-label{font-size:10px;font-weight:500;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.sec-hint{font-size:11px;color:var(--txt3);margin-bottom:10px}
+.tbl-wrap{border:1px solid var(--brd);border-radius:10px;overflow:hidden;max-height:450px;overflow-y:auto}
+table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+th{text-align:left;padding:8px 11px;background:var(--bg3);font-size:10px;font-weight:500;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0;z-index:1;border-bottom:1px solid var(--brd)}
+td{padding:7px 11px;border-bottom:1px solid var(--brd);color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg2)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:500;white-space:nowrap}
+.b-ok{background:var(--ok-bg);color:var(--ok)}.b-warn{background:var(--warn-bg);color:var(--warn)}.b-crit{background:var(--crit-bg);color:var(--crit)}.b-none{background:var(--bg3);color:var(--txt3)}
+.n-ok{color:var(--ok);font-weight:500}.n-warn{color:var(--warn);font-weight:500}.n-crit{color:var(--rappi);font-weight:500}.n-none{color:var(--txt3)}
+.toolbar{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.toolbar input,.toolbar select{background:var(--bg2);border:1px solid var(--brd);color:var(--txt);padding:6px 10px;border-radius:8px;font-size:12px;font-family:Arial,sans-serif}
+.toolbar input{flex:1;min-width:160px}
+.clbl{font-size:11px;color:var(--txt2)}
+.acc-form{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.acc-form input,.acc-form select,.acc-form textarea{background:var(--bg3);border:1px solid var(--brd);color:var(--txt);padding:7px 10px;border-radius:8px;font-size:12px;font-family:Arial,sans-serif}
+.acc-form textarea{grid-column:1/-1;resize:vertical;min-height:52px}
+.btn-add{grid-column:2;background:var(--rappi);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:500}
+.btn-add:hover{opacity:.88}
+.acc-list{display:flex;flex-direction:column;gap:6px}
+.acc-item{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:12px;display:flex;gap:10px}
+.kpi-tag{background:var(--rappi-dim);color:var(--rappi);border:1px solid var(--rappi);font-size:10px;padding:2px 8px;border-radius:20px;white-space:nowrap;height:fit-content;margin-top:1px}
+.acc-body{flex:1;min-width:0}
+.acc-name{font-weight:500;font-size:12px;margin-bottom:2px}
+.acc-txt{font-size:12px;color:var(--txt2);margin-bottom:4px}
+.acc-meta{font-size:10px;color:var(--txt3)}
+.acc-side{display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0}
+.acc-side select{background:var(--bg3);border:1px solid var(--brd);color:var(--txt);padding:3px 7px;border-radius:6px;font-size:11px}
+.acc-del{font-size:10px;color:var(--txt3);cursor:pointer;padding:2px 7px;border-radius:4px}
+.acc-del:hover{background:var(--crit-bg);color:var(--crit)}
+.empty{text-align:center;padding:32px;color:var(--txt3);font-size:12px}
+.id-tag{font-size:10px;color:var(--txt3);font-family:monospace}
+.tgt-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;padding:10px 14px;background:var(--bg2);border:1px solid var(--brd);border-radius:10px}
+.tgt-item{font-size:11px;color:var(--txt2)}.tgt-item b{color:var(--txt)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topbar">
+  <div class="logo-row">
+    <span class="rappi-badge">Rappi</span>
+    <span class="top-title">Scorecard KPI — Compras Turbo</span>
+  </div>
+  <div class="top-meta">Semana 16 · 13 abr 2026 · <span id="ts"></span></div>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="sw('resumen')">Resumen</div>
+  <div class="tab" onclick="sw('proveedores')">Proveedores</div>
+  <div class="tab" onclick="sw('accionables')">Accionables</div>
+</div>
+<div class="section active" id="tab-resumen">
+  <div class="tgt-row">
+    <div class="tgt-item">SWA <b>≥ 94%</b></div>
+    <div class="tgt-item">AVL <b>≥ 95%</b></div>
+    <div class="tgt-item">FR <b>≥ 85%</b></div>
+    <div class="tgt-item">DOI <b>≤ 23 días</b></div>
+  </div>
+  <div class="kpi-grid" id="kpiCards"></div>
+  <div class="pill-row" id="pillRow"></div>
+  <div class="sec-label">Proveedores que requieren atención</div>
+  <div class="sec-hint">SWA &lt; 94% o AVL &lt; 95% — ordenados por severidad</div>
+  <div class="tbl-wrap"><table><thead><tr><th style="width:6%">ID</th><th style="width:28%">Proveedor</th><th style="width:12%">SWA %</th><th style="width:12%">AVL %</th><th style="width:12%">FR %</th><th style="width:12%">DOI días</th><th style="width:18%">Estado</th></tr></thead><tbody id="critBody"></tbody></table></div>
+</div>
+<div class="section" id="tab-proveedores">
+  <div class="toolbar">
+    <input type="text" id="srch" placeholder="Buscar proveedor o ID..." oninput="filt()">
+    <select id="fst" onchange="filt()"><option value="">Todos</option><option value="crit">Crítico</option><option value="warn">Alerta</option><option value="ok">OK</option></select>
+    <span class="clbl" id="clbl"></span>
+  </div>
+  <div class="tbl-wrap"><table><thead><tr><th style="width:6%">ID</th><th style="width:27%">Proveedor</th><th style="width:11%">SWA %</th><th style="width:11%">AVL %</th><th style="width:11%">FR %</th><th style="width:11%">DOI días</th><th style="width:13%">Estado</th></tr></thead><tbody id="mainBody"></tbody></table></div>
+</div>
+<div class="section" id="tab-accionables">
+  <div class="acc-form">
+    <input type="text" id="aP" placeholder="Proveedor" list="supList"><datalist id="supList"></datalist>
+    <select id="aK"><option value="">KPI afectado</option><option>SWA</option><option>AVL</option><option>FR</option><option>DOI</option></select>
+    <input type="text" id="aB" placeholder="Buyer responsable">
+    <input type="date" id="aF">
+    <textarea id="aT" placeholder="Describí el accionable concreto..."></textarea>
+    <select id="aE"><option value="pendiente">Pendiente</option><option value="progreso">En progreso</option><option value="cumplido">Cumplido</option><option value="vencido">Vencido</option></select>
+    <button class="btn-add" onclick="addAcc()">+ Agregar</button>
+  </div>
+  <div class="acc-list" id="accList"></div>
+</div>
+</div>
+<script>
+const T={SWA:94,AVL:95,FR:85,DOI:23};
+const idMap={35:"Citric",44:"Branca",47:"CBGB Distribución",51:"Salentein",57:"Redonhielo",58:"Pura Frutta",59:"Bimbo",61:"CCU",64:"PAP S Andres Giles",67:"Milkaut",68:"Quilmes",71:"Imp. Sudamericana",73:"Tregar",76:"Buhl SA",77:"Frigor",79:"Freddo SA",80:"Tronador SA",81:"Sueño Verde",82:"Pizza Zen",84:"Est Las Marias",85:"Pepsico Argentina",88:"Danone Argentina SA",90:"La Virginia S.A.",93:"Karinat",94:"Colgate",95:"Kopelco",96:"Beiersdorf",100:"Grandwich",101:"Artesanos del Mar",102:"RAZ",104:"Pernod Ricard",106:"Ilko Argentina SA",116:"Eggs Hons (Blancos)",122:"Delidips S.A.S",127:"Haulani",129:"Philip Morris",133:"Leandro Martelletti",136:"Mondelez Argentina",138:"Norton",141:"Reckitt",143:"Los 5 Hispanos",145:"Femsa Coca Cola CD",150:"Cagnoli S.A.",152:"Not Co",153:"Reginald Lee S.A.",157:"Reckitt Health",158:"Loreal Argentina SA",159:"Le Banana",160:"Penaflor Vinos",162:"Necho",163:"Softys",165:"SC Johnson",331:"Golomax",333:"Palta Sagrada",334:"Casero y Natural",337:"Mastellone Hermanos",338:"Arcor S.A.I.C.",340:"Molinos Rio",341:"Nestle Foods",342:"DDS",343:"Speed Argentina",348:"BKL S.A.",368:"Bagley Argentina SA",371:"Naturales Nat Foods",373:"Onneg",374:"Paladini",375:"Quick Food",376:"Unilever",377:"Grupo Cepas",380:"Sancor Bebe",383:"Conyntra S.A.",392:"Mosquita Muerta",397:"Telefonica",402:"Nutricia Bago",433:"Frig Los Prados",448:"Mars",453:"Green & CO",458:"Yaguar",463:"Noly",465:"Villares",474:"Gio",477:"Georgalos Hnos.",479:"By Giro",482:"Maxx Preservativos",484:"Union Ganadera",488:"Kay Yogur Griego",489:"Lacteos La Delfina",501:"Croopers",502:"Merlin Foods",508:"Ueno",518:"British American Tobacco",519:"Vecino Vermú",522:"Bodegas Chandon SA",529:"Cosmico Yerba",551:"Biomac SRL",555:"Kalis",556:"Putruele",559:"Naty Blacher Cocina",560:"Lasfor",563:"Carrefour Maxi",582:"Dreamco S.A.",589:"Lab. Andromaco",591:"Procter & Gamble",601:"Patagonia Sunrise",602:"Ilolay",612:"Guapaletas",613:"Bacoli",618:"McCain",622:"Granger",629:"Luigi Bosca",643:"Formagge Quesos",644:"Cabrales",649:"Frigorifico Maximo",653:"Pritty SA",654:"Timbo",655:"Maderasa",663:"Cerealko",666:"Andina",668:"Semix",671:"Mercado de Carnes",672:"Finca Rosa",675:"De La Familia",676:"Cabra SRL",678:"Chealimentos",683:"Bio-Salud",687:"Grupo Popular",688:"Luvik S.A.",691:"Logax SRL",694:"BAT Cordoba",696:"Babasal",700:"Fabrica de Pan",701:"Energizer",705:"Manaos",715:"Balance Feeds",722:"Gil Gaston",733:"Cachafaz",743:"Molfino Hnos SA",744:"Kenvue",745:"Natura Cosmeticos",748:"Grupo Ayudin",749:"Arrivata",750:"Wapi",754:"Charquiqui",756:"Ecovita",761:"Cancat Pet SRL",769:"Dou Foods",777:"Benevia S.R.L.",791:"Molinos Ala"};
+const doiById={100:2.45,101:59,102:14.82,104:84.92,106:61.83,116:2.36,122:20.86,127:22.32,129:17.73,133:1.61,136:20.28,138:34.33,141:61.69,143:38.06,145:14.9,150:24.51,152:65.82,153:8.07,157:91.66,158:58.37,159:16.35,160:51.58,162:50.83,163:20.31,165:119.15,331:15.45,333:0.91,334:1.61,337:2.18,338:40.62,340:54.12,341:35.09,342:72.86,343:26.42,348:1961.04,35:32.79,368:39.86,371:97.03,373:31.67,374:4.51,375:28.18,376:49.67,377:45.11,383:40.19,402:44.34,433:3.18,448:46.6,44:15.61,453:23.87,458:45,463:8.68,465:90.13,474:68.17,477:50.88,479:41.93,47:36.8,484:38.28,488:4.76,489:18.98,501:52.15,508:4.8,518:16.67,51:92.86,522:43.44,529:43.39,551:18.01,555:13.73,559:51.46,560:102.92,563:43.44,57:4.34,582:65.91,589:93.72,58:18.73,591:84.38,59:10.98,601:1.52,612:30.98,613:2.03,618:23.81,61:24.36,622:93.61,629:27.15,643:26.68,644:96.74,649:8.35,64:13.58,653:34.64,654:73.09,655:12.65,663:37.43,666:12.18,668:61.71,671:33.65,672:23.34,675:41.4,676:44.81,678:47.19,67:28.47,683:70.96,687:20.33,688:54.97,68:15.59,691:84.95,694:21.39,696:54.77,700:10.94,701:63.38,705:6.53,715:33.07,71:76.08,722:12.08,733:46.79,73:16.06,743:15.22,744:195.56,745:64.27,748:82.58,749:25.97,750:28.57,754:19.15,756:90.04,761:124.85,777:17.32,77:30.56,79:20.96,80:18.49,82:43.38,84:9.52,85:32.72,88:2.96,90:67.23,93:30.04,94:23.67,95:89.28,96:58.61};
+const frById={35:94.4,47:57.14,59:63.21,61:99.66,68:96.26,71:93.03,73:90.81,82:83.88,85:99.84,88:81.75,90:94.0,93:100,96:91.04,100:100,102:64.6,104:99.03,106:90.13,116:82.31,133:95.57,143:91.43,145:47.44,150:100,153:89.93,160:96.26,162:94.85,331:66.56,333:90.01,334:99.55,337:91.47,338:59.62,340:58.37,341:64.27,342:42.25,368:84.62,375:96.2,376:60.21,377:85.5,383:58.06,402:99.59,433:76.86,453:70.54,458:55.26,463:96.41,465:84.98,477:67.93,484:98.25,488:99.38,489:65.93,501:98.04,508:32.62,518:27.6,555:100,560:93.32,563:30.51,589:86.26,601:91.63,613:50,643:91.13,644:48.44,649:75,653:94.67,663:76.9,666:91.19,671:100,675:88.02,676:89.65,687:100,688:40.1,691:92.7,694:95.37,696:76.83,700:84.06,701:76.92,705:99.91,715:97.21,722:100,733:99.51,743:85.45,748:90.41,750:58.06,754:96.67};
+const swaRaw=[["ARCOR S.A.I.C.",91.95,93.1],["ARRIVATA",95.57,91.3],["ARTESANOS DEL MAR",98.57,97.76],["BABASAL",96.27,95.69],["BACOLI",55.32,54.29],["BAGLEY ARGENTINA SA",96.28,96.69],["BALANCE FEEDS",37.68,32.81],["BAT CORDOBA",95.11,95.91],["BAT GBA",57.13,50.21],["BAT MAR DEL PLATA",50,26.43],["BAT MORON",91.09,71.94],["BEIERSDORF",95.49,95.57],["BENEVIA S.R.L.",79.87,71.96],["BIMBO",87.54,92.19],["BIO-SALUD",80.93,92.38],["BIOMAC SRL",90.24,88.57],["BKL S.A.",93.08,null],["BODEGAS CHANDON SA",58.92,49.51],["BOGS S.A.",43.69,63.17],["BRANCA",98.28,96.39],["BRITISH AMERICAN TOB",87.86,93.25],["BUHL SA",60.52,45.11],["BY GIRO",96.92,96.78],["CABRA SRL",93.47,97.9],["CABRALES S.A.",96.8,96.45],["CACHAFAZ.",81.51,97.06],["CAGNOLI S.A.",96.32,94.43],["CANCAT PET SRL",99.7,99.42],["CARREFOUR MAXI",68.3,81.77],["CASERO Y NATURAL",80.77,82.11],["CCU",96.82,99.46],["CEREALKO",94.19,97.76],["CHARQUIQUI",92.78,92.78],["CHEALIMENTOS",43.13,27.97],["CITRIC",98.42,99.27],["COLGATE",88.21,91.84],["CONYNTRA S.A.",68.25,84.17],["COSMICO YERBA",85.53,95.55],["CROOPERS",93.28,90.68],["DANONE ARGENTINA SA",88.81,95.98],["DDS",83.8,81.1],["DE LA FAMILIA",97.41,95.6],["DELIDIPS S.A.S",93.18,98.29],["DISTRIBUIDORA CBGB",93.12,96.31],["DOU FOODS",96.42,100],["DREAMCO S. A.",83.45,85.52],["ECOVITA",96.79,96.99],["EGGS HONS (BLANCOS)",60.91,86.37],["ENERGIZER",96.44,95.54],["EST LAS MARIAS",69.04,72.41],["FABRICA DE PAN",76.4,81.38],["FEMSA COCA COLA CD",92.63,97.95],["FINCA ROSA",95.52,92.54],["FORMAGGE QUESOS",96.49,97.6],["FREDDO SA",84.41,81.6],["FRIG LOS PRADOS",83.85,83.71],["FRIGOR",93.19,93.7],["FRIGORIFICO MAXIMO",56.77,61.54],["GEORGALOS HNOS",94.57,98.73],["GIL GASTON",100,100],["GIO",99.13,98.32],["GOLOMAX",93.61,96.75],["GRANDWICH",83.34,87.84],["GRANGER",99.06,98.63],["GREEN & CO",88.94,93.56],["GRUPO AYUDIN",72.02,87.56],["GRUPO CEPAS",94.56,94.53],["GRUPO POPULAR",100,100],["GUAPALETAS",85.67,83.36],["HAULANI",81.45,76.54],["HOLSOM",66.17,54.9],["ILKO ARGENTINA S A",95.91,98.69],["ILOAY",35.64,62.72],["IMP SUDAMERICANA",95.41,95.56],["KALIS",95,98.71],["KARINAT",98.3,98.89],["KAY YOGUR GRIEGO",86.58,90.27],["KENVUE",63.1,80.73],["KO ANDINA AR",97.98,97.16],["KOPELCO",98.24,94.5],["LA VIRGINIA S.A.",98.61,98.25],["LABORATORI ANDROMACO",81.82,76.07],["LABORATORIO ENA",90.24,76.45],["LACTÉOS LA DELFINA",81.65,91.43],["LASFOR",98.66,97.99],["LE BANANA",98.17,97.78],["LEANDRO MARTELLETTI",75.79,90.93],["LOGAX SRL",95.96,93.76],["LOREAL ARGENTINA SA",78.23,87.18],["LOS 5 HISPANOS",97.59,97.83],["LUIGI BOSCA",97.72,97.34],["LUVIK S.A.",81.01,78.04],["MADERASA",93.81,92.29],["MANAOS",63.58,42.46],["MARS",99.02,99.07],["MASTELLONE HERMANOS",89.32,96.31],["MAXX PRESERVATIVOS",76.35,79.51],["MCCAIN",95.15,94.1],["MERCADO DE CARNES",94.79,63.12],["MERLIN FOODS",99,99.48],["MILKAUT",81.87,86.88],["MOLFINO HNOS SA",73.77,66.64],["MOLINOS ALA",76.47,74.85],["MOLINOS RIO",94.48,95.36],["MONDELEZ ARGENTINA",82.84,93.76],["MOSQUITA MUERTA",99.51,99.61],["MOSTO DISTRIBUCIONES",0,0],["NATURA COSMETICOS",98.61,98.17],["NATURALES NAT FOODS",99.5,98.73],["NATY BLACHER COCINA",93.43,95.73],["NECHO",95.08,96.41],["NESTLE FOODS",92.36,81.17],["NOLY",92.05,91.27],["NORTON",92.33,98.12],["NOT CO",99.35,99.24],["NUTRICIA BAGO",92.71,85.9],["ONNEG",93.64,95.03],["PALADINI",59.22,40.4],["PALTA SAGRADA",63.76,86.72],["PAP S ANDRES GILES",98.06,99.33],["PATAGONIA SUNRISE",65.83,89.59],["PENAFLOR VINOS",95.83,95.7],["PEPSICO ARGENTINA",97.57,98.54],["PERNOD RICARD",98.58,98.13],["PHILIP MORRIS",96.24,98.27],["PIZZA ZEN",90.11,87.99],["PRITTY SA",92.51,97.74],["PROCTER & GAMBLE",97.37,96.98],["PURA FRUTTA",93.9,93.61],["PUTRUELE",95.85,94.79],["QUICK FOOD",94.77,93.19],["QUILMES",97.7,98.33],["QUUZ",95.45,84.16],["RAZ",94.49,96.61],["RECKITT",95.68,98.33],["RECKITT HEALTH",94.32,94.49],["REGINALD LEE S.A.",99.1,99.54],["SALENTEIN",91.48,88.21],["SC JHONSON",98.31,97.72],["SEMIX",90.89,96.88],["SOFTYS",95.71,97.37],["SPEED ARGENTINA",91.51,98.87],["SUEÑO VERDE",77.11,80.18],["TELEFONICA",82,61.16],["TERAPIA PICANTE",77.73,82.89],["TF CARNES S.A.",100,100],["TIMBO",99.09,99.51],["TONADITA",46.46,68.72],["TREGAR",96.8,98.31],["TRONADOR SA",99.15,99.37],["UENO",77.92,83.39],["UNILEVER",94.95,95.16],["UNION GANADERA",93.76,92.46],["VAJUAN S.A.S.",90.97,82.69],["VILLARES",97.95,98.31],["WAPI",93.06,90.44],["YAGUAR",75.7,89.91]];
+function findId(n){const up=n.toUpperCase();for(const[id,d]of Object.entries(idMap)){if(d.toUpperCase()===up)return parseInt(id);}for(const[id,d]of Object.entries(idMap)){if(up.length>4&&(d.toUpperCase().startsWith(up.slice(0,6))||up.startsWith(d.toUpperCase().slice(0,6))))return parseInt(id);}return null;}
+const suppliers=swaRaw.map(([sfName,avl,swa])=>{const id=findId(sfName);return{id,name:id?idMap[id]:sfName,sfName,avl,swa,fr:id?frById[id]??null:null,doi:id?doiById[id]??null:null};});
+function st(v,tgt,hi){if(v===null||v===undefined)return 'none';const n=parseFloat(v);if(hi)return n>=tgt?'ok':n>=tgt*.9?'warn':'crit';return n<=tgt?'ok':n<=tgt*1.1?'warn':'crit';}
+function ov(s){const ss=[st(s.swa,T.SWA,true),st(s.avl,T.AVL,true),st(s.fr,T.FR,true),st(s.doi,T.DOI,false)].filter(x=>x!=='none');if(ss.includes('crit'))return 'crit';if(ss.includes('warn'))return 'warn';if(!ss.length)return 'none';return 'ok';}
+function bdg(s){const m={ok:'b-ok',warn:'b-warn',crit:'b-crit',none:'b-none'},l={ok:'OK',warn:'Alerta',crit:'Crítico',none:'Sin datos'},d={ok:'d-ok',warn:'d-warn',crit:'d-crit',none:'d-none'};return`<span class="badge ${m[s]}"><span class="dot ${d[s]}"></span>${l[s]}</span>`;}
+function nv(v,tgt,hi,d=1){if(v===null||v===undefined)return'<span class="n-none">—</span>';const s=st(v,tgt,hi);return`<span class="n-${s}">${parseFloat(v).toFixed(d)}</span>`;}
+function renderCards(){const av=a=>a.filter(v=>v!==null).reduce((x,y)=>x+y,0)/(a.filter(v=>v!==null).length||1);const kpis=[{l:'SWA',v:av(suppliers.map(s=>s.swa)),t:T.SWA,hi:true,s:'%',src:'Snowflake W16'},{l:'AVL',v:av(suppliers.map(s=>s.avl)),t:T.AVL,hi:true,s:'%',src:'Snowflake W16'},{l:'FR',v:av(suppliers.filter(s=>s.fr!==null).map(s=>s.fr)),t:T.FR,hi:true,s:'%',src:'Snowflake'},{l:'DOI',v:av(suppliers.filter(s=>s.doi!==null).map(s=>s.doi)),t:T.DOI,hi:false,s:' días',src:'Excel'}];
+document.getElementById('kpiCards').innerHTML=kpis.map(k=>{const s=st(k.v,k.t,k.hi);return`<div class="kcard ${s==='none'?'':s}"><div class="kcard-lbl">${k.l}</div><div class="kcard-val ${s==='none'?'none':s}">${k.v!==null?k.v.toFixed(1)+k.s:'—'}</div><div class="kcard-sub">Target: ${k.t}${k.s} · ${k.src}</div></div>`;}).join('');
+const c={ok:0,warn:0,crit:0};suppliers.forEach(s=>{const o=ov(s);if(c[o]!==undefined)c[o]++;});
+document.getElementById('pillRow').innerHTML=`<div class="pill"><span class="dot d-ok"></span><span style="color:var(--ok)">${c.ok} OK</span></div><div class="pill"><span class="dot d-warn"></span><span style="color:var(--warn)">${c.warn} alerta</span></div><div class="pill"><span class="dot d-crit"></span><span style="color:var(--rappi)">${c.crit} críticos</span></div><div class="pill" style="color:var(--txt2)">${suppliers.length} proveedores</div>`;}
+function renderCrit(){const rows=suppliers.filter(s=>st(s.swa,T.SWA,true)!=='ok'||st(s.avl,T.AVL,true)!=='ok').sort((a,b)=>{const w={crit:0,warn:1,ok:2,none:3};return w[ov(a)]-w[ov(b)];});document.getElementById('critBody').innerHTML=rows.map(s=>`<tr><td><span class="id-tag">${s.id??'—'}</span></td><td title="${s.sfName}">${s.name}</td><td>${nv(s.swa,T.SWA,true)}</td><td>${nv(s.avl,T.AVL,true)}</td><td>${nv(s.fr,T.FR,true)}</td><td>${nv(s.doi,T.DOI,false,1)}</td><td>${bdg(ov(s))}</td></tr>`).join('');}
+let rows=[];
+function buildRows(){rows=suppliers.map(s=>({s,o:ov(s)}));filt();}
+function filt(){const q=document.getElementById('srch').value.toLowerCase(),f=document.getElementById('fst').value,filtered=rows.filter(({s,o})=>(!q||s.name.toLowerCase().includes(q)||(s.id&&String(s.id).includes(q)))&&(!f||o===f));document.getElementById('clbl').textContent=`${filtered.length} de ${suppliers.length}`;document.getElementById('mainBody').innerHTML=filtered.map(({s,o})=>`<tr><td><span class="id-tag">${s.id??'—'}</span></td><td title="${s.sfName}"><span class="dot d-${o}" style="margin-right:5px"></span>${s.name}</td><td>${nv(s.swa,T.SWA,true)}</td><td>${nv(s.avl,T.AVL,true)}</td><td>${nv(s.fr,T.FR,true)}</td><td>${nv(s.doi,T.DOI,false,1)}</td><td>${bdg(o)}</td></tr>`).join('');}
+let accs=[];
+function addAcc(){const p=document.getElementById('aP').value.trim(),t=document.getElementById('aT').value.trim();if(!p||!t)return;accs.unshift({id:Date.now(),prov:p,kpi:document.getElementById('aK').value,buyer:document.getElementById('aB').value.trim(),fecha:document.getElementById('aF').value,texto:t,estado:document.getElementById('aE').value});['aP','aB','aT','aF'].forEach(i=>document.getElementById(i).value='');document.getElementById('aK').value='';renderAcc();}
+const eL={pendiente:'Pendiente',progreso:'En progreso',cumplido:'Cumplido',vencido:'Vencido'};
+function renderAcc(){const el=document.getElementById('accList');if(!accs.length){el.innerHTML='<div class="empty">Sin accionables. Agregá uno con el formulario.</div>';return;}el.innerHTML=accs.map(a=>`<div class="acc-item">${a.kpi?`<div class="kpi-tag">${a.kpi}</div>`:''}<div class="acc-body"><div class="acc-name">${a.prov}</div><div class="acc-txt">${a.texto}</div><div class="acc-meta">${[a.buyer?'Buyer: '+a.buyer:'',a.fecha?'Límite: '+a.fecha:''].filter(Boolean).join(' · ')}</div></div><div class="acc-side"><select onchange="chE(${a.id},this.value)">${Object.entries(eL).map(([v,l])=>`<option value="${v}" ${a.estado===v?'selected':''}>${l}</option>`).join('')}</select><span class="acc-del" onclick="delA(${a.id})">Eliminar</span></div></div>`).join('');}
+function chE(id,v){const a=accs.find(x=>x.id===id);if(a){a.estado=v;renderAcc();}}
+function delA(id){accs=accs.filter(x=>x.id!==id);renderAcc();}
+function sw(name){document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['resumen','proveedores','accionables'][i]===name));document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id==='tab-'+name));}
+document.getElementById('supList').innerHTML=suppliers.map(s=>`<option value="${s.name}">`).join('');
+document.getElementById('ts').textContent=new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+renderCards();renderCrit();buildRows();renderAcc();
+</script>
+</body>
+</html>

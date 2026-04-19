@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scorecard KPI — Compras Rappi</title>
+<title>Scorecard KPI — Compras Turbo Rappi</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0e0e0e;--bg2:#181818;--bg3:#222;--bg4:#2a2a2a;--brd:#252525;--rappi:#FF441B;--txt:#f0f0f0;--txt2:#999;--txt3:#555;--ok:#4ade80;--ok-bg:#052e16;--warn:#fbbf24;--warn-bg:#2d1f00;--crit:#f87171;--crit-bg:#2d0a0a}
-body{background:var(--bg);color:var(--txt);font-family:var(--font-sans);font-size:13px}
-.wrap{padding:14px 16px}
+:root{--bg:#0e0e0e;--bg2:#181818;--bg3:#222;--brd:#252525;--rappi:#FF441B;--txt:#f0f0f0;--txt2:#999;--txt3:#555;--ok:#4ade80;--ok-bg:#052e16;--warn:#fbbf24;--warn-bg:#2d1f00;--crit:#f87171;--crit-bg:#2d0a0a}
+body{background:var(--bg);color:var(--txt);font-family:Arial,sans-serif;font-size:13px;min-height:100vh}
+.wrap{padding:14px 16px;max-width:1200px;margin:0 auto}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--brd);margin-bottom:14px;flex-wrap:wrap;gap:8px}
 .logo-row{display:flex;align-items:center;gap:10px}
 .rbadge{background:var(--rappi);color:#fff;font-size:11px;font-weight:500;padding:3px 11px;border-radius:20px}
@@ -18,7 +18,6 @@ body{background:var(--bg);color:var(--txt);font-family:var(--font-sans);font-siz
 .tab{padding:5px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:500;color:var(--txt2);border:none;background:transparent}
 .tab.active{background:var(--rappi);color:#fff}
 .sec{display:none}.sec.active{display:block}
-/* KPI cards */
 .kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px}
 .kc{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:12px;position:relative;overflow:hidden}
 .kc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--brd)}
@@ -31,23 +30,9 @@ body{background:var(--bg);color:var(--txt);font-family:var(--font-sans);font-siz
 .pill{display:flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:11px;background:var(--bg2);border:1px solid var(--brd)}
 .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;display:inline-block}
 .d-ok{background:var(--ok)}.d-warn{background:var(--warn)}.d-crit{background:var(--rappi)}.d-none{background:var(--txt3)}
-/* Chart section */
-.chart-panel{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:14px}
-.chart-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
-.chart-controls select{background:var(--bg3);border:1px solid var(--brd);color:var(--txt);padding:6px 10px;border-radius:8px;font-size:12px;font-family:var(--font-sans);min-width:180px}
-.chart-controls .kpi-toggles{display:flex;gap:6px;flex-wrap:wrap}
-.ktog{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:500;border:1px solid var(--brd);background:var(--bg3);color:var(--txt2);user-select:none;transition:all .15s}
-.ktog.active-swa{background:#3b82f620;border-color:#3b82f6;color:#60a5fa}
-.ktog.active-avl{background:#a855f720;border-color:#a855f7;color:#c084fc}
-.ktog.active-fr{background:#f9731620;border-color:#f97316;color:#fb923c}
-.ktog .dot-tog{width:8px;height:8px;border-radius:50%}
-.swa-dot{background:#3b82f6}.avl-dot{background:#a855f7}.fr-dot{background:#f97316}
-.tgt-line-lbl{font-size:10px;color:var(--txt3);margin-left:4px}
-.chart-wrap{position:relative;height:320px}
-/* Supplier table */
 .sec-label{font-size:10px;font-weight:500;color:var(--txt2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
 .sec-hint{font-size:11px;color:var(--txt3);margin-bottom:8px}
-.tbl-wrap{border:1px solid var(--brd);border-radius:10px;overflow:hidden;max-height:380px;overflow-y:auto}
+.tbl-wrap{border:1px solid var(--brd);border-radius:10px;overflow:hidden;max-height:420px;overflow-y:auto}
 table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
 th{text-align:left;padding:8px 10px;background:var(--bg3);font-size:10px;font-weight:500;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0;z-index:1;border-bottom:1px solid var(--brd)}
 td{padding:7px 10px;border-bottom:1px solid var(--brd);color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -57,17 +42,32 @@ tr:hover td{background:var(--bg2)}
 .b-ok{background:var(--ok-bg);color:var(--ok)}.b-warn{background:var(--warn-bg);color:var(--warn)}.b-crit{background:var(--crit-bg);color:var(--crit)}.b-none{background:var(--bg3);color:var(--txt3)}
 .n-ok{color:var(--ok);font-weight:500}.n-warn{color:var(--warn);font-weight:500}.n-crit{color:var(--rappi);font-weight:500}.n-none{color:var(--txt3)}
 .toolbar{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
-.toolbar input,.toolbar select{background:var(--bg2);border:1px solid var(--brd);color:var(--txt);padding:6px 10px;border-radius:8px;font-size:12px;font-family:var(--font-sans)}
+.toolbar input,.toolbar select{background:var(--bg2);border:1px solid var(--brd);color:var(--txt);padding:6px 10px;border-radius:8px;font-size:12px;font-family:Arial,sans-serif}
 .toolbar input{flex:1;min-width:160px}
 .clbl{font-size:11px;color:var(--txt2)}
-.id-tag{font-size:10px;color:var(--txt3);font-family:monospace}
 .tgt-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;padding:8px 12px;background:var(--bg2);border:1px solid var(--brd);border-radius:8px}
 .tgt-item{font-size:11px;color:var(--txt2)}.tgt-item b{color:var(--txt)}
-/* Accionables */
+.chart-panel{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:12px}
+.chart-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.chart-search{position:relative;flex:1;min-width:200px}
+.chart-search input{width:100%;background:var(--bg3);border:1px solid var(--brd);color:var(--txt);padding:6px 10px;border-radius:8px;font-size:12px;font-family:Arial,sans-serif}
+.chart-search input:focus{outline:none;border-color:var(--rappi)}
+.sugg-list{position:absolute;top:100%;left:0;right:0;background:var(--bg3);border:1px solid var(--brd);border-radius:8px;z-index:10;max-height:200px;overflow-y:auto;margin-top:2px;display:none}
+.sugg-item{padding:7px 10px;cursor:pointer;font-size:12px;color:var(--txt)}
+.sugg-item:hover{background:#2a2a2a;color:var(--rappi)}
+.ktogs{display:flex;gap:6px;flex-wrap:wrap}
+.ktog{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:500;border:1px solid var(--brd);background:var(--bg3);color:var(--txt2);user-select:none}
+.ktog.on-swa{background:#3b82f620;border-color:#3b82f6;color:#60a5fa}
+.ktog.on-avl{background:#a855f720;border-color:#a855f7;color:#c084fc}
+.dot-swa{background:#3b82f6;width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot-avl{background:#a855f7;width:8px;height:8px;border-radius:50%;display:inline-block}
+.chart-wrap{position:relative;height:300px}
+.chart-hint{font-size:11px;color:var(--txt3);text-align:center;margin-top:8px}
 .acc-form{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.acc-form input,.acc-form select,.acc-form textarea{background:var(--bg3);border:1px solid var(--brd);color:var(--txt);padding:7px 10px;border-radius:8px;font-size:12px;font-family:var(--font-sans)}
+.acc-form input,.acc-form select,.acc-form textarea{background:var(--bg3);border:1px solid var(--brd);color:var(--txt);padding:7px 10px;border-radius:8px;font-size:12px;font-family:Arial,sans-serif}
 .acc-form textarea{grid-column:1/-1;resize:vertical;min-height:50px}
 .btn-add{grid-column:2;background:var(--rappi);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-weight:500}
+.btn-add:hover{opacity:.88}
 .acc-list{display:flex;flex-direction:column;gap:6px}
 .acc-item{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:11px;display:flex;gap:10px}
 .kpi-tag{background:#3a1208;color:var(--rappi);border:1px solid var(--rappi);font-size:10px;padding:2px 8px;border-radius:20px;white-space:nowrap;height:fit-content;margin-top:1px}
@@ -76,18 +76,18 @@ tr:hover td{background:var(--bg2)}
 .acc-txt{font-size:12px;color:var(--txt2);margin-bottom:3px}
 .acc-meta{font-size:10px;color:var(--txt3)}
 .acc-side{display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0}
-.acc-side select{background:var(--bg3);border:1px solid var(--brd);color:var(--txt);padding:3px 7px;border-radius:6px;font-size:11px;font-family:var(--font-sans)}
+.acc-side select{background:var(--bg3);border:1px solid var(--brd);color:var(--txt);padding:3px 7px;border-radius:6px;font-size:11px;font-family:Arial,sans-serif}
 .acc-del{font-size:10px;color:var(--txt3);cursor:pointer;padding:2px 7px;border-radius:4px}
 .acc-del:hover{background:var(--crit-bg);color:var(--crit)}
 .empty{text-align:center;padding:28px;color:var(--txt3);font-size:12px}
 </style>
-
+</head>
+<body>
 <div class="wrap">
 <div class="topbar">
   <div class="logo-row"><span class="rbadge">Rappi</span><span class="ttitle">Scorecard KPI — Compras Turbo</span></div>
   <div class="tmeta">Semana 16 · 16 abr 2026 · <span id="ts"></span></div>
 </div>
-
 <div class="tabs">
   <div class="tab active" onclick="sw('resumen')">Resumen</div>
   <div class="tab" onclick="sw('evolucion')">Evolución</div>
@@ -95,7 +95,6 @@ tr:hover td{background:var(--bg2)}
   <div class="tab" onclick="sw('accionables')">Accionables</div>
 </div>
 
-<!-- RESUMEN -->
 <div class="sec active" id="tab-resumen">
   <div class="tgt-row">
     <div class="tgt-item">SWA <b>≥ 94%</b></div>
@@ -106,43 +105,35 @@ tr:hover td{background:var(--bg2)}
   <div class="kgrid" id="kpiCards"></div>
   <div class="pill-row" id="pillRow"></div>
   <div class="sec-label">Proveedores que requieren atención</div>
-  <div class="sec-hint">SWA &lt; 94% o AVL &lt; 95% — semana 16 — ordenados por severidad</div>
+  <div class="sec-hint">SWA &lt; 94% o AVL &lt; 95% · semana 16 · ordenados por severidad</div>
   <div class="tbl-wrap"><table><thead><tr>
-    <th style="width:6%">ID</th><th style="width:28%">Proveedor</th>
-    <th style="width:11%">SWA%</th><th style="width:11%">AVL%</th>
+    <th style="width:28%">Proveedor</th><th style="width:11%">SWA%</th><th style="width:11%">AVL%</th>
     <th style="width:11%">FR%</th><th style="width:11%">DOI</th><th style="width:18%">Estado</th>
   </tr></thead><tbody id="critBody"></tbody></table></div>
 </div>
 
-<!-- EVOLUCIÓN -->
 <div class="sec" id="tab-evolucion">
   <div class="chart-panel">
     <div class="chart-controls">
-      <select id="suppSel" onchange="renderChart()">
-        <option value="">— Seleccionar proveedor —</option>
-      </select>
-      <div class="kpi-toggles">
-        <div class="ktog active-swa" id="tog-swa" onclick="toggleKPI('swa')">
-          <span class="dot-tog swa-dot"></span>SWA
-        </div>
-        <div class="ktog active-avl" id="tog-avl" onclick="toggleKPI('avl')">
-          <span class="dot-tog avl-dot"></span>AVL
-        </div>
-        <div class="ktog active-fr" id="tog-fr" onclick="toggleKPI('fr')">
-          <span class="dot-tog fr-dot"></span>FR
-        </div>
+      <div class="chart-search">
+        <input type="text" id="suppSearch" placeholder="Buscar proveedor..." autocomplete="off"
+          oninput="onSearch(this.value)" onfocus="onSearch(this.value)" onblur="setTimeout(hideSugg,200)">
+        <div class="sugg-list" id="suggList"></div>
       </div>
-      <span style="font-size:11px;color:var(--txt3)">Últimas 8 semanas · Líneas punteadas = targets</span>
+      <div class="ktogs">
+        <div class="ktog on-swa" id="tog-swa" onclick="togKPI('swa')"><span class="dot-swa"></span>SWA</div>
+        <div class="ktog on-avl" id="tog-avl" onclick="togKPI('avl')"><span class="dot-avl"></span>AVL</div>
+      </div>
     </div>
-    <div class="chart-wrap"><canvas id="evoChart" role="img" aria-label="Gráfico de evolución de KPIs por proveedor"></canvas></div>
+    <div id="selLabel" style="font-size:12px;color:var(--txt2);margin-bottom:10px;min-height:18px"></div>
+    <div class="chart-wrap"><canvas id="evoChart" role="img" aria-label="Evolución SWA y AVL por proveedor"></canvas></div>
   </div>
-  <div style="font-size:11px;color:var(--txt3);text-align:center;margin-top:-8px">Seleccioná un proveedor arriba para ver su evolución. Podés activar/desactivar cada KPI con los botones de color.</div>
+  <div class="chart-hint">Targets: SWA 94% · AVL 95% — líneas punteadas · Datos reales Snowflake W8–W16</div>
 </div>
 
-<!-- PROVEEDORES -->
 <div class="sec" id="tab-proveedores">
   <div class="toolbar">
-    <input type="text" id="srch" placeholder="Buscar proveedor o ID..." oninput="filt()">
+    <input type="text" id="srch" placeholder="Buscar proveedor..." oninput="filt()">
     <select id="fst" onchange="filt()">
       <option value="">Todos</option><option value="crit">Crítico</option>
       <option value="warn">Alerta</option><option value="ok">OK</option>
@@ -150,13 +141,11 @@ tr:hover td{background:var(--bg2)}
     <span class="clbl" id="clbl"></span>
   </div>
   <div class="tbl-wrap"><table><thead><tr>
-    <th style="width:6%">ID</th><th style="width:26%">Proveedor</th>
-    <th style="width:10%">SWA%</th><th style="width:10%">AVL%</th>
-    <th style="width:10%">FR%</th><th style="width:10%">DOI</th><th style="width:12%">Estado</th>
+    <th style="width:30%">Proveedor</th><th style="width:12%">SWA%</th><th style="width:12%">AVL%</th>
+    <th style="width:12%">FR%</th><th style="width:12%">DOI</th><th style="width:14%">Estado</th>
   </tr></thead><tbody id="mainBody"></tbody></table></div>
 </div>
 
-<!-- ACCIONABLES -->
 <div class="sec" id="tab-accionables">
   <div class="acc-form">
     <input type="text" id="aP" placeholder="Proveedor" list="supList"><datalist id="supList"></datalist>
@@ -173,250 +162,76 @@ tr:hover td{background:var(--bg2)}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-const T={SWA:94,AVL:95,FR:85,DOI:23};
 
-const idMap={35:"Citric",44:"Branca",47:"CBGB Distribución",51:"Salentein",57:"Redonhielo",58:"Pura Frutta",59:"Bimbo",61:"CCU",64:"PAP S Andres Giles",67:"Milkaut",68:"Quilmes",71:"Imp. Sudamericana",73:"Tregar",76:"Buhl SA",77:"Frigor",79:"Freddo SA",80:"Tronador SA",81:"Sueño Verde",82:"Pizza Zen",84:"Est Las Marias",85:"Pepsico Argentina",88:"Danone Argentina SA",90:"La Virginia S.A.",93:"Karinat",94:"Colgate",95:"Kopelco",96:"Beiersdorf",100:"Grandwich",101:"Artesanos del Mar",102:"RAZ",104:"Pernod Ricard",106:"Ilko Argentina SA",116:"Eggs Hons (Blancos)",122:"Delidips S.A.S",127:"Haulani",129:"Philip Morris",133:"Leandro Martelletti",136:"Mondelez Argentina",138:"Norton",141:"Reckitt",143:"Los 5 Hispanos",145:"Femsa Coca Cola CD",150:"Cagnoli S.A.",152:"Not Co",153:"Reginald Lee S.A.",157:"Reckitt Health",158:"Loreal Argentina SA",159:"Le Banana",160:"Penaflor Vinos",162:"Necho",163:"Softys",165:"SC Johnson",331:"Golomax",333:"Palta Sagrada",334:"Casero y Natural",337:"Mastellone Hermanos",338:"Arcor S.A.I.C.",340:"Molinos Rio",341:"Nestle Foods",342:"DDS",343:"Speed Argentina",348:"BKL S.A.",368:"Bagley Argentina SA",371:"Naturales Nat Foods",373:"Onneg",374:"Paladini",375:"Quick Food",376:"Unilever",377:"Grupo Cepas",380:"Sancor Bebe",383:"Conyntra S.A.",392:"Mosquita Muerta",397:"Telefonica",402:"Nutricia Bago",433:"Frig Los Prados",448:"Mars",453:"Green & CO",458:"Yaguar",463:"Noly",465:"Villares",474:"Gio",477:"Georgalos Hnos.",479:"By Giro",482:"Maxx Preservativos",484:"Union Ganadera",488:"Kay Yogur Griego",489:"Lacteos La Delfina",501:"Croopers",502:"Merlin Foods",508:"Ueno",518:"British American Tobacco",519:"Vecino Vermú",522:"Bodegas Chandon SA",529:"Cosmico Yerba",551:"Kalis",555:"Lasfor",556:"Putruele",559:"Naty Blacher Cocina",560:"Lasfor 2",563:"Carrefour Maxi",582:"Dreamco S.A.",589:"Lab. Andromaco",591:"Procter & Gamble",601:"Patagonia Sunrise",602:"Ilolay",607:"Putruele Bodega",612:"Guapaletas",613:"Bacoli",618:"McCain",622:"Granger",629:"Luigi Bosca",643:"Formagge Quesos",644:"Cabrales",645:"Gelomax",647:"Mosto Distribuciones",648:"Vajuan S.A.S.",649:"Frigorifico Maximo",653:"Pritty SA",654:"Timbo",655:"Maderasa",663:"Cerealko",666:"Andina/KO Andina",668:"Semix",671:"Mercado de Carnes",672:"Finca Rosa",675:"De La Familia",676:"Cabra SRL",678:"Chealimentos",683:"Bio-Salud",687:"Grupo Popular",688:"Luvik S.A.",691:"Logax SRL",694:"BAT Cordoba",696:"Babasal",700:"Fabrica de Pan",701:"Energizer",705:"Manaos",706:"Agua Sparkling",715:"Balance Feeds",722:"Gil Gaston",728:"Atomic Kitchen",733:"Cachafaz",743:"Molfino Hnos SA",744:"Kenvue",745:"Natura Cosmeticos",747:"Lab. ENA",748:"Grupo Ayudin",749:"Arrivata",750:"Wapi",754:"Charquiqui",756:"Ecovita",761:"Cancat Pet SRL",769:"Dou Foods",777:"Benevia S.R.L.",782:"Karinat Local",789:"GranEG",791:"Molinos Ala",797:"Dicospa"};
-
-const doiById={100:2.45,101:59,102:14.82,104:84.92,106:61.83,116:2.36,122:20.86,127:22.32,129:17.73,133:1.61,136:20.28,138:34.33,141:61.69,143:38.06,145:14.9,150:24.51,152:65.82,153:8.07,157:91.66,158:58.37,159:16.35,160:51.58,162:50.83,163:20.31,165:119.15,331:15.45,333:0.91,334:1.61,337:2.18,338:40.62,340:54.12,341:35.09,342:72.86,343:26.42,348:1961.04,35:32.79,368:39.86,371:97.03,373:31.67,374:4.51,375:28.18,376:49.67,377:45.11,402:44.34,433:3.18,448:46.6,44:15.61,453:23.87,458:45,463:8.68,465:90.13,474:68.17,477:50.88,479:41.93,47:36.8,484:38.28,488:4.76,489:18.98,501:52.15,508:4.8,518:16.67,51:92.86,522:43.44,529:43.39,551:13.73,555:102.92,559:51.46,563:43.44,57:4.34,582:65.91,589:93.72,58:18.73,591:84.38,59:10.98,601:1.52,612:30.98,613:2.03,618:23.81,61:24.36,622:93.61,629:27.15,643:26.68,644:96.74,649:8.35,64:13.58,653:34.64,654:73.09,655:12.65,663:37.43,666:12.18,668:61.71,671:33.65,672:23.34,675:41.4,676:44.81,678:47.19,67:28.47,683:70.96,687:20.33,688:54.97,68:15.59,691:84.95,694:21.39,696:54.77,700:10.94,701:63.38,705:6.53,715:33.07,71:76.08,722:12.08,733:46.79,73:16.06,743:15.22,744:195.56,745:64.27,748:82.58,749:25.97,750:28.57,754:19.15,756:90.04,761:124.85,777:17.32,77:30.56,79:20.96,80:18.49,82:43.38,84:9.52,85:32.72,88:2.96,90:67.23,93:30.04,94:23.67,95:89.28,96:58.61};
-
-// SWA/AVL histórico por semana
-const swaHist=[
-["ARCOR S.A.I.C.",8,79.56,79.29],[9,84.33,86.3],[10,83.31,81.07],[11,85.09,88.4],[12,89.28,94.76],[13,88.02,93.87],[14,89.75,93.7],[15,93.19,96.84],[16,91.95,93.1],
-["ARRIVATA",8,90.36,81.14],[9,90.98,88.77],[10,95.09,94.47],[11,84.02,76.37],[12,79.32,80.42],[13,78.26,76.98],[14,75.27,73.89],[15,97.85,95.97],[16,95.57,91.3],
-["BIMBO",8,75.95,74.12],[9,78.15,80.46],[10,82.99,84.3],[11,85.23,88.06],[12,82.41,87.61],[13,80.59,88.7],[14,83.5,91.24],[15,80.72,88.89],[16,87.54,92.19],
-["CCU",8,91.71,94.44],[9,94.87,97.42],[10,96.13,97.49],[11,95.77,98.02],[12,94.49,97.44],[13,93.68,96.56],[14,93.85,96.98],[15,93.44,97.87],[16,96.82,99.46],
-["DANONE ARGENTINA SA",8,66.86,69.01],[9,70.88,78.06],[10,76.39,86.17],[11,73.15,78.63],[12,77.54,91.4],[13,80.86,86.99],[14,83.82,87.33],[15,85.69,90.38],[16,88.81,95.98],
-["DDS",8,91.16,87.97],[9,89.9,85.13],[10,87.24,81.06],[11,88.26,80],[12,88.01,84.43],[13,85.82,82.48],[14,83.02,75.72],[15,84.71,84.45],[16,83.8,81.1],
-["FEMSA COCA COLA CD",8,79.61,90.2],[9,83.11,93.11],[10,82.08,91.72],[11,87.03,94.6],[12,88.06,96.29],[13,89.57,97.61],[14,92.12,98.82],[15,92.71,98.84],[16,92.63,97.95],
-["GREEN & CO",8,82.92,85.95],[9,81.42,86.72],[10,86.09,90.67],[11,85.53,91.02],[12,87.81,93.74],[13,87.68,94.16],[14,86.93,94.61],[15,88.61,96.15],[16,88.94,93.56],
-["GOLOMAX",8,89.71,83.59],[9,85.24,76.16],[10,87.88,80.27],[11,90.4,87.04],[12,91.97,90.38],[13,92.96,94.78],[14,92.98,95.12],[15,93.61,96.19],[16,93.61,96.75],
-["LEANDRO MARTELLETTI",8,63.44,82.38],[9,67.67,89.84],[10,72.67,92.88],[11,77.36,94.83],[12,74.83,93.75],[13,69.25,92.57],[14,74,93.08],[15,72.82,90.96],[16,75.79,90.93],
-["MASTELLONE HERMANOS",8,62.37,72.53],[9,77.15,91.08],[10,80.06,93.95],[11,76.8,90.11],[12,81.85,94.4],[13,84.79,96.04],[14,86.67,95.76],[15,91.19,97.44],[16,89.32,96.31],
-["MOLINOS RIO",8,91.3,89.73],[9,90.22,86.34],[10,86.39,78.83],[11,87.46,82.59],[12,86.89,86.02],[13,84.71,87.36],[14,87.3,89.14],[15,91.58,92.99],[16,94.48,95.36],
-["NESTLE FOODS",8,88.29,85.84],[9,87.6,83.88],[10,82.87,71.51],[11,86.39,83.38],[12,86.34,83.64],[13,90.85,92.51],[14,93.65,95.43],[15,92.8,91.53],[16,92.36,81.17],
-["QUILMES",8,86.87,89.49],[9,87.55,92.88],[10,90.17,93.98],[11,91.01,92.06],[12,87.67,91.19],[13,87.64,92.36],[14,93.33,94.06],[15,96.65,96.28],[16,97.7,98.33],
-["PALTA SAGRADA",8,69.71,88.13],[9,74.33,91.69],[10,75.99,93.66],[11,78.6,94.6],[12,77.2,92.43],[13,72.64,89.75],[14,72.38,86.61],[15,65.11,81.03],[16,63.76,86.72],
-["UNILEVER",8,95.95,95.49],[9,94.99,93.7],[10,93.06,87.23],[11,91.64,81.44],[12,85.56,77.07],[13,80.17,72.84],[14,89.41,87.26],[15,94.1,94.65],[16,94.95,95.16],
-["YAGUAR",8,85.47,86.54],[9,85.7,86.74],[10,83.49,88.05],[11,81.12,87.42],[12,79.9,88.06],[13,80.62,91.77],[14,78.47,92.19],[15,74.98,87.71],[16,75.7,89.91],
-];
-
-// Parse swaHist into by-supplier lookup
-const swaBySupp={};
-let cur=null;
-for(const row of swaHist){
-  if(typeof row[0]==='string'){cur=row[0];swaBySupp[cur]={};}
-  else if(cur){const[wk,avl,swa]=row;swaBySupp[cur][wk]={avl,swa};}
-}
-
-// FR histórico by supplier_id + week
-const frHist={
-  35:{9:85.92,10:61.31,11:70.13,12:90.28,13:77.21,14:85.81,15:99.06,16:94.4},
-  47:{8:98.89,9:86.27,10:83.69,11:91.58,12:90.74,13:100,14:99.5,15:69.1},
-  59:{8:48.25,9:49.1,10:60.36,11:59.15,12:50.04,13:60.19,14:53.56,15:67.48,16:60.13},
-  61:{8:95.07,9:84.76,10:87.76,11:91.22,12:82.44,13:80.37,14:89.55,15:93.28,16:99.66},
-  68:{8:87.9,9:71.44,10:81.01,11:85.5,12:82.89,13:96.17,14:76.39,15:83.95,16:75.67},
-  73:{8:37.09,9:63.35,10:71.38,11:81.89,12:68.92,13:86.72,14:77.08,15:94.78,16:90.98},
-  85:{9:75.86,10:74.1,11:89.92,12:95.7,13:83.98,14:88.13,15:96.97,16:99.84},
-  88:{8:57.91,9:69.67,10:78.17,11:84.24,12:84.88,13:80.51,14:76.28,15:81.4,16:85.24},
-  100:{8:99.73,9:100,10:99.96,11:94.73,12:99.74,13:99.22,14:98.76,15:99.94,16:100},
-  102:{8:66.43,9:75.01,10:84.6,11:81.33,12:76.54,13:74.31,14:93.2,15:83.94,16:62.27},
-  116:{8:85.54,9:90.88,10:98.61,11:73.46,12:99.68,13:99.62,14:92.66,15:89.5,16:82.63},
-  133:{8:95.1,9:94.2,10:96.65,11:95.56,12:97.91,13:94.45,14:95.29,15:93.63,16:93.47},
-  143:{8:69.42,10:94.78,12:92.68,14:88.51,15:91.43,16:91.43},
-  145:{8:95.82,9:90.69,10:85.2,11:94.2,12:93.28,13:76.94,14:88.06,15:69.37,16:42.37},
-  331:{8:59.54,9:57.59,10:63.15,11:54.86,12:79.83,13:75.58,14:71.6,15:79.35,16:66.81},
-  333:{8:91.79,9:92.56,10:95.01,11:92.65,12:89.42,13:89.81,14:88.49,15:84.17,16:87.12},
-  337:{8:69.69,9:86.08,10:88.39,11:83.52,12:93.5,13:97.46,14:93.48,15:95.21,16:97.02},
-  338:{8:64.45,9:18.57,10:96.36,11:78.61,12:48.46,14:73.51,15:59.62},
-  340:{8:84.97,9:92.96,10:59.48,11:75.32,12:23.77,13:10.72,14:65.11,15:64.48,16:58.37},
-  341:{9:64.81,10:75.91,11:72.22,12:85.95,13:80.31,14:91.2,15:74.36,16:64.27},
-  342:{8:55.88,9:54.64,10:52.1,11:62.65,12:51.17,13:50.55,14:57.01,15:48.67,16:18.92},
-  368:{8:69.68,9:25.77,11:93.64,14:90.82,15:84.62},
-  375:{9:96.53,10:93.85,11:91.42,12:94.19,13:100,14:97.56,15:92.36,16:96.2},
-  376:{8:49.49,9:49.29,10:39.44,13:70.34,14:55.56,15:60.21},
-  377:{9:82.59,11:91.5,13:83.66,16:85.5},
-  383:{8:25.28,9:56.34,10:39.99,11:36.81,12:45.9,13:46.27,14:51.55,15:43.59,16:58.59},
-  433:{8:72.72,9:81.66,10:84.55,11:75.38,12:71.93,13:71.45,14:66.97,15:77.13,16:82.29},
-  453:{8:63.17,9:60.71,10:60.29,11:53.92,12:59.33,13:73.63,14:73.5,15:75.7,16:72.38},
-  458:{8:56.61,10:35.16,11:69.57,12:39.63,13:80.98,15:83.08,16:54.63},
-  463:{8:82.59,9:84.74,10:96.92,11:99.41,12:93.84,13:94.34,14:99.78,15:97.17,16:98.79},
-  518:{8:97.37,9:88.06,10:91.67,11:89.91,12:72.62,13:81.74,14:55.09,15:66.42,16:24.54},
-  563:{8:39.07,9:30.89,10:25.76,11:43.5,12:37.49,13:23.35,14:17.65,15:30.51},
-  601:{8:97.19,9:95.24,10:79.56,11:89.1,12:87.49,13:87.47,14:92.94,15:95.72,16:95.48},
-  612:{9:72.96,10:50.76,11:28.87,12:82.11,14:96.76,15:99.29,16:83.7},
-  663:{9:82.69,12:91.24,14:72.29,15:76.9},
-  688:{9:30.12,10:36.92,11:24.68,12:43.64,13:24.4,15:42.04,16:47.55},
-};
-
-// Week labels
+const H={"ARCOR S.A.I.C.":{"8":[80.07,78.69],"9":[84.33,86.3],"10":[83.31,81.07],"11":[85.09,88.4],"12":[89.28,94.76],"13":[88.02,93.87],"14":[89.75,93.7],"15":[93.19,96.84],"16":[89.74,92.19]},"ARRIVATA":{"8":[89.39,79.09],"9":[90.98,88.77],"10":[95.09,94.47],"11":[84.02,76.37],"12":[73.23,79.11],"13":[72.5,75.35],"14":[70.15,71.67],"15":[97.36,95.59],"16":[95.47,93.33]},"ARTESANOS DEL MAR":{"8":[83.28,98.57],"9":[83.84,94.63],"10":[89.17,96.86],"11":[94.94,98.63],"12":[98.6,97.41],"13":[94.81,91.58],"14":[96.46,95.01],"15":[98.9,98.53],"16":[98.31,97.05]},"BABASAL":{"8":[89.3,92.5],"9":[89.35,92.65],"10":[96.03,93.79],"11":[97.39,95.24],"12":[98.52,97.26],"13":[97.37,97.44],"14":[98.51,98.8],"15":[96.53,96.13],"16":[97.28,96.78]},"BACOLI":{"8":[97.35,97.53],"9":[93.34,91.33],"10":[86.85,88.79],"11":[75.43,80.38],"12":[84.28,84.71],"13":[61.51,73.9],"14":[74.74,82.53],"15":[54.93,54.64],"16":[56.4,60.04]},"BAGLEY ARGENTINA SA":{"8":[89.92,87.98],"9":[90.46,89.5],"10":[85.9,81.71],"11":[89.53,87.55],"12":[94.87,95.12],"13":[95.36,96.96],"14":[96.09,98.24],"15":[97.42,98.5],"16":[95.67,96.6]},"BALANCE FEEDS":{"8":[65.24,51.2],"9":[44.61,29.03],"10":[17.93,8.7],"11":[37.2,35.01],"12":[60.75,76.83],"13":[54.13,73.68],"14":[15.28,10.4],"15":[16.58,9.76],"16":[42.68,39.39]},"BAT CORDOBA":{"8":[76.86,76.47],"9":[50.47,51.72],"10":[92.27,94.54],"11":[96.55,99.02],"12":[96.55,99.83],"13":[88.28,71.34],"14":[90.35,90.97],"15":[92.4,94.46],"16":[95.67,96.07]},"BAT GBA":{"12":[33.97,32.28],"13":[28.34,37.0],"14":[70.92,47.29],"15":[39.1,17.48],"16":[68.44,64.65]},"BAT MAR DEL PLATA":{"8":[40.0,84.82],"9":[40.0,89.53],"10":[40.0,95.48],"11":[40.0,100.0],"12":[40.0,100.0],"13":[64.96,99.78],"14":[61.49,73.78],"15":[50.89,18.6],"16":[67.43,50.0]},"BAT MORON":{"12":[100.0,100.0],"13":[87.1,62.25],"14":[88.86,63.26],"15":[86.2,63.45],"16":[87.89,68.81]},"BEIERSDORF":{"8":[96.58,94.97],"9":[96.28,93.66],"10":[97.07,95.06],"11":[97.16,94.72],"12":[90.03,83.75],"13":[88.86,83.47],"14":[92.67,92.61],"15":[92.4,92.66],"16":[95.98,96.0]},"BENEVIA S.R.L.":{"12":[99.75,83.97],"13":[94.02,78.66],"14":[90.88,72.89],"15":[84.22,66.26],"16":[78.37,67.9]},"BIMBO":{"8":[78.27,78.45],"9":[78.15,80.46],"10":[82.99,84.3],"11":[85.23,88.06],"12":[82.41,87.61],"13":[80.59,88.7],"14":[83.5,91.24],"15":[80.72,88.89],"16":[88.46,92.89]},"BIO-SALUD":{"8":[85.68,84.98],"9":[86.7,86.17],"10":[81.58,81.96],"11":[80.97,81.14],"12":[77.81,86.37],"13":[71.81,79.88],"14":[76.09,81.27],"15":[82.26,92.98],"16":[82.24,94.35]},"BIOMAC SRL":{"8":[60.0,62.14],"9":[66.19,65.36],"10":[92.49,91.4],"11":[100.0,100.0],"12":[91.95,91.23],"13":[95.99,96.22],"14":[97.37,94.19],"15":[95.02,94.81],"16":[89.47,88.33]},"BKL S.A.":{"8":[95.65,null],"9":[92.88,null],"10":[98.2,null],"11":[99.29,null],"12":[99.64,null],"13":[100.0,null],"14":[100.0,null],"15":[99.1,null],"16":[92.64,null]},"BODEGAS CHANDON SA":{"8":[96.17,95.83],"9":[97.99,96.22],"10":[97.59,93.42],"11":[96.63,91.19],"12":[91.67,75.76],"13":[80.57,55.87],"14":[71.21,49.89],"15":[62.08,46.69],"16":[63.17,54.87]},"BOGS S.A.":{"8":[49.7,62.02],"9":[43.07,55.99],"10":[44.34,60.14],"11":[57.66,74.84],"12":[65.17,90.29],"13":[46.55,62.59],"14":[44.66,62.39],"15":[39.49,57.31],"16":[42.13,61.31]},"BRANCA":{"8":[93.38,87.02],"9":[97.01,95.74],"10":[97.47,95.48],"11":[97.14,95.63],"12":[96.35,96.62],"13":[97.38,96.24],"14":[97.34,97.21],"15":[97.71,96.36],"16":[98.61,97.54]},"BRITISH AMERICAN TOB":{"8":[97.12,97.48],"9":[94.87,92.79],"10":[94.86,94.23],"11":[93.78,94.89],"12":[88.15,90.22],"13":[88.97,91.84],"14":[83.71,85.52],"15":[83.51,88.98],"16":[88.23,93.24]},"BUHL SA":{"8":[94.71,83.63],"9":[94.93,90.1],"10":[88.98,81.64],"11":[92.06,92.03],"12":[90.02,91.32],"13":[87.64,90.19],"14":[80.52,77.96],"15":[68.91,57.02],"16":[59.4,43.7]},"BY GIRO":{"8":[94.58,95.37],"9":[94.88,96.6],"10":[96.29,98.98],"11":[97.23,97.69],"12":[98.76,99.02],"13":[95.62,93.48],"14":[99.58,99.44],"15":[98.29,98.28],"16":[97.04,96.96]},"CABRA SRL":{"8":[97.83,96.37],"9":[98.79,98.7],"10":[98.11,98.37],"11":[97.44,97.72],"12":[95.8,96.58],"13":[94.0,95.38],"14":[94.7,97.78],"15":[94.49,98.39],"16":[93.35,97.67]},"CABRALES S.A.":{"8":[94.01,80.71],"9":[95.1,91.99],"10":[94.82,94.19],"11":[96.38,96.08],"12":[92.05,87.17],"13":[87.75,83.08],"14":[92.53,88.03],"15":[98.01,97.97],"16":[96.87,96.87]},"CACHAFAZ.":{"8":[79.51,82.42],"9":[84.77,88.05],"10":[83.67,86.16],"11":[82.0,83.29],"12":[83.16,91.16],"13":[77.98,93.28],"14":[77.2,95.19],"15":[77.97,94.84],"16":[82.33,97.24]},"CAGNOLI S.A.":{"8":[94.16,93.22],"9":[94.12,94.4],"10":[92.35,95.36],"11":[89.91,90.0],"12":[93.62,95.67],"13":[90.28,92.1],"14":[91.77,95.22],"15":[95.73,97.91],"16":[96.05,94.42]},"CANCAT PET SRL":{"8":[97.86,88.76],"9":[97.28,94.24],"10":[97.16,93.98],"11":[97.28,90.85],"12":[95.19,84.44],"13":[94.94,82.1],"14":[98.67,98.85],"15":[99.49,99.84],"16":[99.06,98.51]},"CARREFOUR MAXI":{"8":[75.6,74.26],"9":[77.7,78.87],"10":[75.67,85.77],"11":[70.34,77.23],"12":[73.57,84.58],"13":[72.33,86.16],"14":[72.25,88.86],"15":[70.33,84.88],"16":[69.32,82.77]},"CASERO Y NATURAL":{"8":[78.69,82.21],"9":[60.73,64.33],"10":[65.45,73.53],"11":[80.71,83.01],"12":[81.26,87.73],"13":[88.02,93.25],"14":[84.53,89.67],"15":[27.02,27.92],"16":[80.87,82.86]},"CCU":{"8":[92.2,94.37],"9":[94.87,97.42],"10":[96.13,97.49],"11":[95.77,98.02],"12":[94.49,97.44],"13":[93.68,96.56],"14":[93.85,96.98],"15":[93.44,97.87],"16":[96.99,99.49]},"CEREALKO":{"8":[88.12,93.22],"9":[84.38,90.0],"10":[88.04,90.67],"11":[89.29,92.59],"12":[91.67,95.2],"13":[96.01,97.9],"14":[95.41,98.62],"15":[94.2,98.09],"16":[94.94,97.9]},"CHARQUIQUI":{"8":[70.31,64.72],"9":[67.68,66.62],"10":[90.11,90.55],"11":[94.69,92.61],"12":[96.94,96.77],"13":[93.47,92.86],"14":[94.48,92.86],"15":[94.91,91.32],"16":[90.8,90.36]},"CHEALIMENTOS":{"8":[64.88,64.37],"9":[29.34,30.96],"10":[94.22,97.12],"11":[98.35,99.49],"12":[98.24,98.41],"13":[93.51,88.59],"14":[88.91,93.27],"15":[82.28,68.4],"16":[58.52,47.65]},"CITRIC":{"8":[95.8,96.37],"9":[95.29,97.05],"10":[91.06,92.44],"11":[87.33,91.74],"12":[90.1,94.72],"13":[92.34,97.54],"14":[92.78,99.19],"15":[96.58,99.37],"16":[98.58,99.31]},"COLGATE":{"8":[97.3,97.55],"9":[97.97,98.24],"10":[96.82,97.44],"11":[94.6,95.6],"12":[91.17,93.15],"13":[94.31,96.15],"14":[93.38,96.14],"15":[91.94,96.64],"16":[87.26,90.88]},"CONYNTRA S.A.":{"8":[77.4,83.05],"9":[78.25,84.88],"10":[79.54,88.85],"11":[81.48,89.7],"12":[78.25,88.46],"13":[74.14,86.0],"14":[73.87,85.44],"15":[69.75,83.49],"16":[68.9,85.09]},"COSMICO YERBA":{"8":[90.76,93.99],"9":[95.42,99.76],"10":[90.37,92.99],"11":[65.01,53.12],"12":[95.42,97.77],"13":[91.31,97.91],"14":[95.78,99.41],"15":[87.98,95.19],"16":[85.73,96.03]},"CROOPERS":{"8":[87.79,87.12],"9":[86.16,85.45],"10":[86.86,86.24],"11":[88.89,85.9],"12":[94.04,96.21],"13":[89.05,87.53],"14":[88.53,90.68],"15":[96.72,95.95],"16":[90.69,81.66]},"DANONE ARGENTINA SA":{"8":[67.85,70.68],"9":[70.88,78.06],"10":[76.39,86.17],"11":[73.15,78.63],"12":[77.5,91.4],"13":[80.81,86.99],"14":[83.77,87.33],"15":[85.64,90.38],"16":[85.42,95.55]},"DDS":{"8":[92.31,91.53],"9":[89.9,85.13],"10":[87.24,81.06],"11":[88.26,80.0],"12":[87.98,84.41],"13":[85.79,82.47],"14":[82.99,75.72],"15":[84.69,84.45],"16":[84.77,82.66]},"DE LA FAMILIA":{"8":[79.99,72.24],"9":[89.64,88.13],"10":[87.62,84.77],"11":[84.77,79.89],"12":[96.17,95.94],"13":[97.25,96.02],"14":[98.52,97.83],"15":[98.1,97.57],"16":[97.39,96.36]},"DELIDIPS S.A.S":{"8":[72.35,73.23],"9":[86.45,89.51],"10":[96.79,96.02],"11":[94.24,94.51],"12":[94.62,95.61],"13":[97.1,96.02],"14":[97.82,98.41],"15":[97.01,98.19],"16":[92.9,97.43]},"DISTRIBUIDORA CBGB":{"8":[88.26,97.98],"9":[87.61,96.57],"10":[88.36,97.51],"11":[89.22,97.91],"12":[89.02,98.77],"13":[87.3,97.49],"14":[90.01,99.07],"15":[92.09,97.19],"16":[94.09,97.15]},"DOU FOODS":{"15":[100.0,null],"16":[95.96,100.0]},"DREAMCO S. A.":{"8":[98.11,97.62],"9":[97.96,97.89],"10":[94.35,87.42],"11":[91.72,82.97],"12":[88.28,70.96],"13":[87.59,72.8],"14":[87.36,78.59],"15":[85.55,84.01],"16":[83.02,85.1]},"ECOVITA":{"8":[99.07,80.89],"9":[99.04,87.73],"10":[97.79,90.3],"11":[96.45,94.7],"12":[93.26,94.45],"13":[91.11,93.22],"14":[86.11,88.96],"15":[91.44,90.8],"16":[96.93,97.16]},"EGGS HONS (BLANCOS)":{"8":[73.3,90.6],"9":[76.53,90.84],"10":[84.08,94.22],"11":[72.51,70.84],"12":[83.07,92.76],"13":[92.17,98.37],"14":[92.76,97.39],"15":[81.72,92.88],"16":[62.76,87.85]},"ENERGIZER":{"8":[98.17,98.71],"9":[96.34,94.03],"10":[92.82,90.8],"11":[93.89,93.11],"12":[86.91,85.36],"13":[85.93,85.18],"14":[97.44,96.11],"15":[99.05,98.17],"16":[96.88,95.62]},"ESSITY":{"8":[89.29,73.13],"9":[77.15,56.54],"10":[63.1,44.58],"11":[50.0,29.14],"16":[7.69,0.0]},"EST LAS MARIAS":{"8":[83.02,87.22],"9":[87.57,92.93],"10":[93.91,96.03],"11":[93.21,93.19],"12":[89.96,92.42],"13":[85.5,90.6],"14":[81.95,91.19],"15":[77.24,87.63],"16":[67.52,68.52]},"FABRICA DE PAN":{"8":[70.14,80.24],"9":[63.31,70.28],"10":[68.21,73.53],"11":[74.87,81.8],"12":[71.66,70.07],"13":[66.59,71.82],"14":[70.67,69.84],"15":[70.89,69.62],"16":[74.98,79.56]},"FEMSA COCA COLA CD":{"8":[79.92,89.88],"9":[83.11,93.11],"10":[82.08,91.72],"11":[87.03,94.6],"12":[88.85,96.45],"13":[90.31,97.72],"14":[93.14,98.91],"15":[93.89,98.91],"16":[94.24,97.77]},"FINCA ROSA":{"9":[100.0,100.0],"10":[90.21,100.0],"11":[88.56,99.48],"12":[50.61,47.4],"13":[20.01,10.54],"14":[82.07,77.59],"15":[95.48,93.5],"16":[96.88,94.89]},"FORMAGGE QUESOS":{"8":[97.61,98.09],"9":[98.01,98.73],"10":[94.65,96.24],"11":[91.03,94.75],"12":[92.74,94.09],"13":[94.6,94.78],"14":[97.47,99.16],"15":[94.86,97.11],"16":[94.1,96.88]},"FREDDO SA":{"8":[92.39,94.11],"9":[92.1,90.4],"10":[97.3,97.67],"11":[87.75,87.21],"12":[94.54,95.52],"13":[97.0,96.67],"14":[97.35,96.37],"15":[90.7,85.36],"16":[83.92,80.95]},"FRESH":{"15":[100.0,100.0],"16":[95.92,85.19]},"FRIG LOS PRADOS":{"8":[58.1,63.18],"9":[68.07,72.75],"10":[66.23,75.5],"11":[71.38,76.87],"12":[75.18,75.32],"13":[67.51,67.84],"14":[70.13,64.99],"15":[81.6,78.97],"16":[86.69,86.61]},"FRIGOR":{"8":[87.0,88.78],"9":[90.66,93.65],"10":[80.2,74.53],"11":[91.55,93.22],"12":[97.74,97.26],"13":[94.89,95.41],"14":[94.9,93.96],"15":[96.07,97.61],"16":[93.48,92.92]},"FRIGORIFICO MAXIMO":{"8":[73.44,70.02],"9":[48.02,50.5],"10":[60.42,61.6],"11":[67.56,68.11],"12":[62.28,44.48],"13":[78.05,77.52],"14":[79.99,89.0],"15":[66.89,78.51],"16":[64.41,67.71]},"GEORGALOS HNOS":{"8":[82.95,84.06],"9":[84.9,90.12],"10":[85.36,92.15],"11":[85.57,89.14],"12":[87.34,95.95],"13":[92.08,98.65],"14":[94.31,99.3],"15":[94.72,99.04],"16":[94.42,98.55]},"GIL GASTON":{"8":[99.67,98.96],"9":[97.49,94.48],"10":[92.45,89.99],"11":[75.15,73.39],"12":[96.08,95.76],"13":[97.65,96.58],"14":[96.8,96.02],"15":[94.36,96.31],"16":[100.0,100.0]},"GIO":{"8":[93.75,93.69],"9":[94.33,91.98],"10":[99.08,99.19],"11":[99.59,99.3],"12":[98.97,98.54],"13":[98.95,98.33],"14":[98.87,98.14],"15":[99.24,99.03],"16":[99.34,98.77]},"GOLOMAX":{"8":[89.89,83.83],"9":[85.24,76.16],"10":[87.88,80.27],"11":[90.4,87.04],"12":[91.97,90.38],"13":[92.96,94.78],"14":[92.98,95.12],"15":[93.61,96.19],"16":[93.85,97.43]},"GRANDWICH":{"8":[89.23,91.99],"9":[81.02,87.9],"10":[81.96,89.34],"11":[81.3,86.95],"12":[87.75,92.25],"13":[87.47,91.59],"14":[82.11,87.89],"15":[87.91,91.73],"16":[80.98,85.51]},"GRANGER":{"8":[95.51,97.09],"9":[96.5,97.53],"10":[96.57,93.93],"11":[97.88,98.35],"12":[98.21,99.59],"13":[97.53,98.19],"14":[99.4,98.67],"15":[99.95,99.94],"16":[98.77,98.77]},"GREEN & CO":{"8":[82.67,87.11],"9":[81.42,86.72],"10":[86.09,90.67],"11":[85.53,91.02],"12":[87.81,93.74],"13":[87.68,94.16],"14":[86.93,94.61],"15":[88.61,96.15],"16":[88.94,94.41]},"GRUPO AYUDIN":{"8":[21.76,68.17],"9":[21.04,66.13],"10":[61.99,75.83],"11":[82.99,91.83],"12":[81.13,90.83],"13":[78.17,87.51],"14":[73.4,84.71],"15":[70.51,85.41],"16":[77.34,91.31]},"GRUPO CEPAS":{"8":[94.67,94.36],"9":[96.0,95.03],"10":[97.65,97.41],"11":[94.86,94.44],"12":[94.23,93.87],"13":[94.71,94.28],"14":[96.56,97.56],"15":[95.75,97.13],"16":[95.36,95.42]},"GRUPO POPULAR":{"8":[50.0,31.9],"9":[67.26,57.16],"10":[87.05,79.93],"11":[74.4,71.47],"12":[93.01,88.67],"13":[85.27,78.32],"14":[87.05,88.81],"15":[100.0,100.0],"16":[100.0,100.0]},"GUAPALETAS":{"8":[79.47,70.11],"9":[84.41,83.47],"10":[76.76,69.33],"11":[50.5,59.17],"12":[53.18,42.97],"13":[67.62,50.49],"14":[87.45,81.21],"15":[91.03,85.89],"16":[87.97,86.63]},"HAULANI":{"8":[83.15,88.1],"9":[84.99,86.74],"10":[86.36,88.06],"11":[79.93,80.65],"12":[83.73,83.29],"13":[92.71,86.98],"14":[94.55,88.82],"15":[87.49,81.28],"16":[81.04,76.11]},"HOLSOM":{"13":[100.0,null],"14":[95.94,84.66],"15":[87.24,79.89],"16":[64.41,51.41]},"ILKO ARGENTINA S A":{"8":[88.86,94.17],"9":[88.92,92.78],"10":[91.42,94.55],"11":[91.3,96.2],"12":[91.68,94.97],"13":[89.5,93.23],"14":[92.51,96.1],"15":[95.3,98.6],"16":[95.87,98.52]},"ILOAY":{"8":[42.61,52.17],"9":[40.01,40.25],"10":[55.41,45.94],"11":[45.57,42.11],"12":[32.81,34.19],"13":[23.51,26.58],"14":[26.7,28.93],"15":[37.89,47.21],"16":[34.7,58.34]},"IMP SUDAMERICANA":{"8":[88.4,83.16],"9":[91.33,88.03],"10":[93.54,93.26],"11":[93.89,94.73],"12":[95.14,95.87],"13":[94.41,94.25],"14":[97.14,97.02],"15":[96.86,97.4],"16":[94.73,95.89]},"KALIS":{"8":[93.66,95.61],"9":[94.0,97.12],"10":[95.55,97.14],"11":[85.27,90.53],"12":[96.48,97.19],"13":[94.41,97.37],"14":[97.98,98.93],"15":[97.25,99.13],"16":[93.94,98.44]},"KARINAT":{"8":[79.72,79.29],"9":[81.3,88.63],"10":[81.12,77.99],"11":[93.46,91.25],"12":[97.74,97.37],"13":[99.1,98.95],"14":[98.21,97.65],"15":[97.97,95.84],"16":[98.67,99.22]},"KAY YOGUR GRIEGO":{"8":[71.82,86.7],"9":[60.3,72.18],"10":[73.08,87.59],"11":[78.22,90.46],"12":[75.82,89.51],"13":[83.37,96.05],"14":[79.67,92.15],"15":[77.63,91.31],"16":[84.13,87.06]},"KENVUE":{"8":[82.35,49.77],"9":[68.73,36.06],"10":[55.21,25.6],"11":[44.2,22.26],"12":[44.77,29.69],"13":[39.19,34.69],"14":[35.41,42.47],"15":[45.87,57.1],"16":[63.83,84.21]},"KO ANDINA AR":{"8":[56.32,69.97],"9":[54.48,78.55],"10":[50.45,87.39],"11":[43.47,50.11],"12":[81.35,90.18],"13":[91.99,97.64],"14":[93.87,97.53],"15":[90.77,85.96],"16":[97.33,96.0]},"KOPELCO":{"8":[95.85,95.45],"9":[96.56,94.3],"10":[93.88,87.57],"11":[94.22,89.04],"12":[97.68,96.34],"13":[95.15,90.79],"14":[93.91,87.6],"15":[97.74,96.93],"16":[97.9,94.01]},"LA VIRGINIA S.A.":{"8":[95.22,91.77],"9":[95.94,94.21],"10":[95.43,91.97],"11":[95.22,91.36],"12":[95.15,93.99],"13":[96.92,96.71],"14":[98.86,98.8],"15":[98.9,99.06],"16":[98.63,98.33]},"LABORATORI ANDROMACO":{"8":[97.85,97.04],"9":[98.45,98.45],"10":[98.84,99.08],"11":[98.74,98.64],"12":[83.76,70.6],"13":[83.98,81.52],"14":[83.1,81.75],"15":[78.86,76.78],"16":[86.19,78.62]},"LABORATORIO ENA":{"8":[84.39,73.7],"9":[79.6,71.99],"10":[71.78,63.24],"11":[88.97,83.68],"12":[92.26,81.12],"13":[97.49,94.77],"14":[93.98,76.59],"15":[92.2,72.11],"16":[89.29,74.99]},"LACTÉOS LA DELFINA":{"8":[86.18,90.25],"9":[82.65,81.92],"10":[79.95,76.72],"11":[87.18,84.09],"12":[90.58,88.57],"13":[75.97,76.63],"14":[55.8,75.36],"15":[55.39,92.87],"16":[82.35,92.54]},"LASFOR":{"8":[97.39,95.94],"9":[97.73,97.37],"10":[97.84,98.61],"11":[95.77,95.51],"12":[95.29,94.19],"13":[97.12,98.1],"14":[97.92,98.42],"15":[98.8,98.76],"16":[98.66,98.13]},"LE BANANA":{"8":[78.5,75.99],"9":[81.72,80.31],"10":[95.18,95.13],"11":[97.57,96.92],"12":[95.51,94.88],"13":[96.33,96.33],"14":[95.56,94.92],"15":[97.78,97.43],"16":[98.57,98.29]},"LEANDRO MARTELLETTI":{"8":[63.26,80.21],"9":[67.67,89.84],"10":[72.67,92.88],"11":[77.36,94.83],"12":[74.82,93.75],"13":[69.03,92.54],"14":[73.71,93.05],"15":[72.57,90.94],"16":[72.57,90.1]},"LOGAX SRL":{"8":[91.62,86.65],"9":[90.11,83.49],"10":[92.27,92.11],"11":[90.71,90.32],"12":[92.28,90.79],"13":[96.22,96.96],"14":[95.49,95.48],"15":[94.23,90.79],"16":[96.4,94.89]},"LOREAL ARGENTINA SA":{"8":[89.07,88.66],"9":[88.27,86.61],"10":[86.54,86.13],"11":[81.88,81.64],"12":[63.45,57.67],"13":[53.99,52.26],"14":[73.25,74.43],"15":[80.12,85.44],"16":[78.31,87.74]},"LOS 5 HISPANOS":{"8":[89.14,84.16],"9":[93.42,94.98],"10":[95.25,97.65],"11":[95.08,94.13],"12":[96.45,97.19],"13":[95.56,96.04],"14":[96.59,97.43],"15":[98.85,99.23],"16":[97.62,97.53]},"LUIGI BOSCA":{"8":[98.05,96.93],"9":[97.68,98.25],"10":[97.69,98.42],"11":[97.2,95.58],"12":[97.45,96.42],"13":[97.48,96.7],"14":[97.32,97.07],"15":[98.36,98.4],"16":[98.09,98.09]},"LUVIK S.A.":{"8":[83.91,84.83],"9":[83.17,86.7],"10":[81.21,88.42],"11":[76.44,89.44],"12":[75.2,85.19],"13":[75.34,79.84],"14":[66.88,52.54],"15":[75.02,63.88],"16":[81.31,80.88]},"MADERASA":{"8":[100.0,100.0],"9":[99.51,99.46],"10":[98.88,99.39],"11":[92.02,93.62],"12":[94.12,97.44],"13":[94.24,99.13],"14":[99.74,99.97],"15":[97.92,98.25],"16":[95.87,94.83]},"MANAOS":{"8":[72.68,76.48],"9":[77.23,77.42],"10":[86.4,91.54],"11":[80.22,84.38],"12":[87.45,90.58],"13":[92.59,94.34],"14":[90.19,91.02],"15":[79.09,65.66],"16":[64.17,43.11]},"MARS":{"8":[92.51,87.07],"9":[93.25,90.42],"10":[96.44,95.07],"11":[98.19,98.58],"12":[98.13,98.2],"13":[97.09,96.31],"14":[97.62,98.31],"15":[97.36,95.55],"16":[99.13,99.16]},"MASTELLONE HERMANOS":{"8":[61.81,70.5],"9":[77.15,91.08],"10":[80.06,93.95],"11":[76.8,90.11],"12":[81.88,94.43],"13":[84.79,96.04],"14":[86.67,95.76],"15":[91.2,97.44],"16":[88.19,95.76]},"MAXX PRESERVATIVOS":{"8":[92.42,87.65],"9":[90.96,82.32],"10":[92.05,85.77],"11":[95.23,94.84],"12":[94.06,90.84],"13":[89.48,84.74],"14":[85.81,81.63],"15":[83.22,85.13],"16":[75.41,79.18]},"MCCAIN":{"8":[91.24,90.6],"9":[91.11,92.25],"10":[93.15,93.27],"11":[91.49,91.67],"12":[94.46,95.43],"13":[95.91,96.27],"14":[94.76,93.93],"15":[97.62,98.13],"16":[96.02,95.15]},"MERCADO DE CARNES":{"8":[100.0,100.0],"15":[35.71,100.0],"16":[89.98,67.43]},"MERLIN FOODS":{"8":[86.79,92.87],"9":[86.15,90.31],"10":[85.53,92.36],"11":[87.94,94.91],"12":[93.4,97.17],"13":[94.36,96.56],"14":[98.99,99.5],"15":[99.35,99.1],"16":[99.04,99.49]},"MILKAUT":{"8":[60.76,77.64],"9":[61.12,81.51],"10":[63.14,82.69],"11":[55.07,66.59],"12":[65.52,59.86],"13":[77.76,79.66],"14":[82.9,87.71],"15":[86.25,92.07],"16":[81.16,84.24]},"MOLFINO HNOS SA":{"8":[45.05,55.54],"9":[48.85,58.62],"10":[69.05,77.66],"11":[94.33,87.67],"12":[90.25,78.61],"13":[78.78,61.98],"14":[84.56,79.76],"15":[70.56,65.35],"16":[73.73,67.2]},"MOLINOS ALA":{"8":[100.0,100.0],"9":[95.53,97.05],"10":[87.22,91.77],"11":[67.76,68.77],"12":[57.83,65.55],"13":[51.7,67.76],"14":[95.41,94.7],"15":[87.47,89.55],"16":[73.2,69.9]},"MOLINOS RIO":{"8":[91.09,89.17],"9":[90.22,86.34],"10":[86.39,78.83],"11":[87.46,82.59],"12":[86.88,86.02],"13":[84.71,87.36],"14":[87.31,89.14],"15":[91.58,92.99],"16":[94.68,95.37]},"MONDELEZ ARGENTINA":{"8":[91.59,94.55],"9":[90.86,94.96],"10":[88.33,91.75],"11":[83.64,84.64],"12":[82.8,86.57],"13":[89.9,96.75],"14":[88.94,97.1],"15":[85.86,95.89],"16":[79.44,92.85]},"MOSQUITA MUERTA":{"8":[95.91,92.03],"9":[94.97,85.52],"10":[94.37,92.79],"11":[93.93,92.72],"12":[94.33,93.72],"13":[93.9,93.52],"14":[97.45,97.86],"15":[99.18,99.46],"16":[98.97,99.55]},"NATURA COSMETICOS":{"8":[98.18,95.92],"9":[96.52,94.13],"10":[92.35,87.26],"11":[89.48,79.42],"12":[92.32,85.99],"13":[92.7,88.08],"14":[96.99,95.67],"15":[95.08,92.04],"16":[98.22,97.43]},"NATURALES NAT FOODS":{"8":[91.03,81.16],"9":[89.31,75.26],"10":[85.98,75.08],"11":[80.21,75.36],"12":[69.48,50.51],"13":[87.33,86.94],"14":[89.57,93.56],"15":[93.51,96.63],"16":[99.56,98.96]},"NATY BLACHER COCINA":{"8":[85.25,79.73],"9":[84.6,80.31],"10":[86.46,83.79],"11":[88.12,82.67],"12":[92.52,90.24],"13":[81.84,74.99],"14":[86.69,83.21],"15":[92.3,90.88],"16":[94.67,96.74]},"NECHO":{"8":[96.24,91.16],"9":[96.23,88.37],"10":[96.54,95.4],"11":[93.97,91.83],"12":[94.7,93.13],"13":[95.52,96.58],"14":[95.01,96.62],"15":[95.9,96.94],"16":[95.27,97.25]},"NESTLE FOODS":{"8":[87.83,86.09],"9":[87.6,83.88],"10":[82.87,71.51],"11":[86.39,83.38],"12":[86.36,83.64],"13":[90.87,92.52],"14":[93.68,95.43],"15":[92.82,91.53],"16":[90.07,82.8]},"NOLY":{"8":[83.67,89.08],"9":[77.33,84.09],"10":[82.72,83.68],"11":[83.71,78.8],"12":[94.27,94.5],"13":[94.21,92.6],"14":[92.48,92.62],"15":[89.81,91.37],"16":[93.55,93.3]},"NORTON":{"8":[84.07,76.09],"9":[77.08,66.47],"10":[84.35,88.48],"11":[78.78,84.2],"12":[85.33,90.67],"13":[84.36,90.01],"14":[86.69,94.43],"15":[89.81,97.67],"16":[92.42,98.53]},"NOT CO":{"8":[93.18,96.46],"9":[93.74,96.54],"10":[96.95,96.18],"11":[91.62,88.11],"12":[89.29,84.46],"13":[94.72,93.08],"14":[98.33,98.25],"15":[98.98,98.7],"16":[99.25,99.18]},"NUTRICIA BAGO":{"8":[88.78,81.48],"9":[90.2,84.42],"10":[96.5,95.47],"11":[94.06,92.0],"12":[90.62,83.74],"13":[95.44,90.41],"14":[94.95,89.4],"15":[94.74,90.47],"16":[92.77,85.84]},"ONNEG":{"8":[77.49,91.82],"9":[85.47,89.75],"10":[92.57,93.95],"11":[92.46,96.6],"12":[95.71,98.5],"13":[96.94,96.88],"14":[97.14,97.69],"15":[94.81,97.2],"16":[94.76,95.44]},"PALADINI":{"8":[83.97,91.85],"9":[87.92,93.45],"10":[90.12,92.77],"11":[86.35,88.7],"12":[92.21,94.84],"13":[95.16,96.4],"14":[93.65,94.76],"15":[79.34,72.66],"16":[57.22,38.92]},"PALTA SAGRADA":{"8":[68.82,86.17],"9":[74.33,91.69],"10":[75.99,93.66],"11":[78.6,94.6],"12":[77.2,92.43],"13":[72.64,89.75],"14":[72.38,86.61],"15":[65.11,81.03],"16":[70.17,89.03]},"PAP S ANDRES GILES":{"8":[93.21,92.24],"9":[93.32,95.29],"10":[96.61,97.74],"11":[95.9,96.97],"12":[96.06,98.31],"13":[98.29,99.15],"14":[97.45,97.73],"15":[98.57,99.39],"16":[97.71,99.46]},"PATAGONIA SUNRISE":{"8":[72.54,87.35],"9":[73.08,90.29],"10":[68.36,76.8],"11":[69.29,84.97],"12":[73.24,90.18],"13":[72.76,89.13],"14":[74.34,88.69],"15":[70.34,87.75],"16":[65.35,87.83]},"PENAFLOR VINOS":{"8":[94.57,92.94],"9":[96.8,96.53],"10":[95.06,91.67],"11":[94.56,91.07],"12":[95.72,93.03],"13":[95.44,92.58],"14":[97.75,97.32],"15":[96.37,96.44],"16":[96.12,96.37]},"PEPSICO ARGENTINA":{"8":[91.2,96.76],"9":[91.5,97.04],"10":[95.88,98.07],"11":[96.56,98.05],"12":[96.07,96.6],"13":[96.27,96.32],"14":[98.31,99.09],"15":[97.83,98.09],"16":[97.43,98.5]},"PERNOD RICARD":{"8":[95.66,88.64],"9":[97.66,97.64],"10":[96.75,96.68],"11":[96.83,96.74],"12":[96.8,96.82],"13":[96.59,98.08],"14":[96.62,98.32],"15":[98.58,98.8],"16":[98.96,98.72]},"PHILIP MORRIS":{"8":[92.63,95.3],"9":[96.1,98.65],"10":[96.79,98.68],"11":[94.84,98.17],"12":[94.85,97.72],"13":[95.4,96.98],"14":[97.97,99.05],"15":[97.74,99.13],"16":[96.16,98.25]},"PIZZA ZEN":{"8":[87.03,77.32],"9":[92.45,84.45],"10":[94.29,90.11],"11":[88.38,81.73],"12":[74.3,64.2],"13":[90.5,87.91],"14":[93.9,93.94],"15":[93.07,93.5],"16":[95.0,93.53]},"PRITTY SA":{"8":[94.66,92.09],"9":[92.51,79.35],"10":[90.04,93.65],"11":[88.9,91.95],"12":[95.63,99.24],"13":[95.48,99.35],"14":[94.75,99.0],"15":[93.67,97.91],"16":[93.09,98.2]},"PROCTER & GAMBLE":{"8":[90.93,88.37],"9":[91.05,88.27],"10":[92.51,89.99],"11":[89.17,82.43],"12":[94.5,92.39],"13":[92.74,86.35],"14":[88.27,75.33],"15":[91.23,80.57],"16":[97.26,96.42]},"PURA FRUTTA":{"8":[65.16,40.6],"9":[86.22,78.59],"10":[87.09,83.59],"11":[80.24,75.53],"12":[79.94,75.01],"13":[88.01,80.1],"14":[86.53,80.8],"15":[86.86,81.92],"16":[95.37,95.36]},"PUTRUELE":{"8":[96.66,96.26],"9":[95.57,91.42],"10":[94.86,86.29],"11":[94.25,83.8],"12":[94.03,78.33],"13":[90.5,38.19],"14":[86.4,40.88],"15":[88.15,60.12],"16":[95.68,94.6]},"QUICK FOOD":{"8":[80.39,82.52],"9":[82.71,83.23],"10":[86.31,87.32],"11":[86.07,86.55],"12":[90.45,92.92],"13":[89.92,89.69],"14":[93.14,93.48],"15":[92.99,93.13],"16":[94.97,93.42]},"QUILMES":{"8":[86.54,88.68],"9":[87.55,92.88],"10":[90.17,93.98],"11":[91.01,92.06],"12":[87.67,91.19],"13":[87.64,92.36],"14":[93.33,94.06],"15":[95.85,96.28],"16":[96.98,98.28]},"QUUZ":{"13":[100.0,100.0],"14":[100.0,100.0],"15":[98.19,88.55],"16":[95.45,84.81]},"RAZ":{"8":[90.3,86.05],"9":[89.26,83.91],"10":[89.84,83.3],"11":[91.82,86.52],"12":[92.67,92.88],"13":[93.28,95.63],"14":[94.77,97.05],"15":[95.17,97.29],"16":[94.75,97.34]},"RECKITT":{"8":[97.59,95.54],"9":[97.09,95.2],"10":[95.8,94.62],"11":[95.46,94.78],"12":[94.87,92.36],"13":[95.67,96.36],"14":[96.35,97.78],"15":[96.07,98.35],"16":[95.74,98.51]},"RECKITT HEALTH":{"8":[98.39,96.39],"9":[97.89,96.56],"10":[94.85,88.14],"11":[94.15,81.83],"12":[92.33,74.25],"13":[94.79,90.0],"14":[95.41,93.78],"15":[95.79,96.11],"16":[93.97,92.72]},"REGINALD LEE S.A.":{"8":[68.51,68.86],"9":[75.21,75.23],"10":[90.83,96.41],"11":[95.0,98.14],"12":[91.82,95.53],"13":[92.36,95.33],"14":[88.44,94.58],"15":[86.07,89.9],"16":[98.03,98.61]},"SALENTEIN":{"8":[82.57,84.21],"9":[81.83,84.15],"10":[78.1,77.9],"11":[90.7,91.6],"12":[92.13,92.32],"13":[93.88,95.26],"14":[96.66,95.82],"15":[93.63,91.32],"16":[92.06,89.28]},"SANCOR BEBE":{"8":[88.8,92.04],"9":[92.9,97.2],"10":[97.38,96.55],"11":[97.11,92.07],"12":[98.03,96.12],"13":[98.89,98.57],"14":[98.68,95.6],"15":[97.02,94.4]},"SC JHONSON":{"8":[96.97,95.97],"9":[95.81,93.15],"10":[96.25,95.04],"11":[96.69,96.01],"12":[96.79,95.63],"13":[96.59,95.49],"14":[97.43,97.02],"15":[98.36,98.35],"16":[98.12,97.5]},"SEMIX":{"8":[67.91,69.29],"9":[76.67,77.85],"10":[76.79,82.79],"11":[70.61,81.03],"12":[67.56,79.43],"13":[63.9,65.48],"14":[89.84,92.92],"15":[91.5,97.09],"16":[90.45,95.74]},"SOFTYS":{"8":[93.0,95.91],"9":[91.89,93.87],"10":[92.96,93.44],"11":[93.05,90.46],"12":[94.47,95.17],"13":[98.31,99.34],"14":[98.04,99.16],"15":[97.39,98.48],"16":[95.27,97.34]},"SPEED ARGENTINA":{"8":[84.14,96.16],"9":[89.48,97.92],"10":[95.9,98.59],"11":[97.38,99.14],"12":[97.97,99.41],"13":[96.79,98.9],"14":[97.61,97.99],"15":[94.72,98.86],"16":[90.88,98.72]},"SUEÑO VERDE":{"8":[60.17,56.82],"9":[80.04,85.88],"10":[83.45,91.16],"11":[83.98,90.65],"12":[85.0,89.88],"13":[79.9,90.91],"14":[83.36,87.92],"15":[80.75,77.59],"16":[81.49,80.61]},"TELEFONICA":{"8":[80.69,74.19],"9":[87.22,86.52],"10":[95.99,96.36],"11":[92.09,85.11],"12":[92.07,86.44],"13":[97.69,92.8],"14":[97.47,90.4],"15":[94.31,84.2],"16":[80.54,57.96]},"TERAPIA PICANTE":{"8":[100.0,100.0],"9":[100.0,100.0],"10":[98.57,99.14],"11":[98.16,98.96],"12":[99.05,99.23],"13":[96.5,96.02],"14":[95.61,95.35],"15":[87.68,89.73],"16":[68.93,75.21]},"TF CARNES S.A.":{"16":[99.29,87.77]},"TIMBO":{"8":[98.02,96.42],"9":[98.44,97.17],"10":[97.7,96.89],"11":[98.15,97.27],"12":[98.44,97.83],"13":[98.87,99.05],"14":[99.25,99.33],"15":[99.28,99.58],"16":[98.93,99.17]},"TONADITA":{"8":[37.05,48.99],"9":[53.34,69.3],"10":[55.73,71.98],"11":[53.34,57.38],"12":[63.74,72.92],"13":[60.99,80.42],"14":[52.16,75.69],"15":[56.34,70.02],"16":[44.2,65.66]},"TREGAR":{"8":[63.74,72.82],"9":[87.0,86.14],"10":[86.18,81.0],"11":[85.95,84.47],"12":[88.39,93.17],"13":[87.08,94.07],"14":[91.97,94.92],"15":[93.49,95.14],"16":[96.39,98.03]},"TRONADOR SA":{"8":[58.45,66.02],"9":[61.6,73.76],"10":[94.06,97.16],"11":[97.11,98.19],"12":[98.68,99.31],"13":[96.93,97.6],"14":[95.68,96.05],"15":[99.21,99.35],"16":[99.1,99.31]},"UENO":{"8":[70.24,70.53],"9":[78.57,84.36],"10":[89.48,91.62],"11":[55.79,44.29],"12":[58.53,57.21],"13":[66.67,63.0],"14":[57.58,53.65],"15":[71.9,76.56],"16":[78.61,83.3]},"UNILEVER":{"8":[96.2,95.4],"9":[94.99,93.7],"10":[93.06,87.23],"11":[91.64,81.44],"12":[85.56,77.07],"13":[80.17,72.84],"14":[89.41,87.26],"15":[94.1,94.65],"16":[94.99,95.17]},"UNION GANADERA":{"8":[78.37,94.78],"9":[79.52,90.25],"10":[84.76,87.72],"11":[89.8,85.39],"12":[90.5,91.28],"13":[90.63,95.72],"14":[91.84,88.56],"15":[95.08,96.78],"16":[92.73,89.2]},"VAJUAN S.A.S.":{"8":[29.86,53.3],"9":[92.26,92.34],"10":[100.0,100.0],"11":[80.16,83.34],"12":[97.42,97.96],"13":[100.0,100.0],"14":[100.0,100.0],"15":[100.0,100.0],"16":[75.93,65.88]},"VILLARES":{"8":[97.03,97.09],"9":[96.25,96.14],"10":[96.87,96.95],"11":[95.14,94.08],"12":[90.4,84.76],"13":[85.11,71.0],"14":[95.33,93.84],"15":[95.1,93.41],"16":[98.1,98.18]},"WAPI":{"8":[96.59,94.08],"9":[96.45,92.58],"10":[93.4,83.19],"11":[92.31,91.45],"12":[92.61,88.29],"13":[93.33,90.48],"14":[89.35,86.4],"15":[89.96,87.26],"16":[95.07,93.51]},"YAGUAR":{"8":[85.87,86.52],"9":[85.7,86.74],"10":[83.49,88.05],"11":[81.12,87.42],"12":[79.9,88.06],"13":[80.62,91.77],"14":[78.47,92.19],"15":[75.44,91.75],"16":[79.32,91.25]}};
 const WEEKS=[8,9,10,11,12,13,14,15,16];
-const WLABELS=["W8\n16feb","W9\n23feb","W10\n2mar","W11\n9mar","W12\n16mar","W13\n23mar","W14\n30mar","W15\n6abr","W16\n13abr"];
+const WLABELS=["W8","W9","W10","W11","W12","W13","W14","W15","W16"];
+const T_SWA=94,T_AVL=95,T_FR=85,T_DOI=23;
+const ALL_SUPPS=Object.keys(H).sort();
+const kpiOn={swa:true,avl:true};
+let chart=null,curSupp=null;
+const W16={};
+ALL_SUPPS.forEach(n=>{if(H[n]["16"])W16[n]=H[n]["16"];});
+const FR16={"CITRIC":94.4,"DISTRIBUIDORA CBGB":57.14,"BIMBO":63.21,"CCU":99.66,"QUILMES":75.67,"IMP SUDAMERICANA":93.03,"TREGAR":90.98,"PEPSICO ARGENTINA":99.84,"DANONE ARGENTINA SA":85.24,"LA VIRGINIA S.A.":94.0,"KARINAT":100,"BEIERSDORF":91.04,"GRANDWICH":100,"RAZ":62.27,"PERNOD RICARD":99.03,"ILKO ARGENTINA S A":90.13,"EGGS HONS (BLANCOS)":82.63,"LEANDRO MARTELLETTI":93.47,"LOS 5 HISPANOS":91.43,"FEMSA COCA COLA CD":42.37,"CAGNOLI S.A.":100,"REGINALD LEE S.A.":92,"PENAFLOR VINOS":96.26,"NECHO":94.85,"GOLOMAX":66.81,"PALTA SAGRADA":87.12,"CASERO Y NATURAL":99.55,"MASTELLONE HERMANOS":97.02,"ARCOR S.A.I.C.":59.62,"MOLINOS RIO":58.37,"NESTLE FOODS":64.27,"DDS":18.92,"BAGLEY ARGENTINA SA":84.62,"QUICK FOOD":96.2,"UNILEVER":60.21,"GRUPO CEPAS":85.5,"SANCOR BEBE":83.33,"CONYNTRA S.A.":58.59,"NUTRICIA BAGO":99.59,"FRIG LOS PRADOS":82.29,"GREEN & CO":72.38,"YAGUAR":54.63,"NOLY":98.79,"VILLARES":84.98,"GEORGALOS HNOS":67.93,"UNION GANADERA":98.25,"KAY YOGUR GRIEGO":100,"LACTÉOS LA DELFINA":65.93,"CROOPERS":98.04,"UENO":23.39,"BRITISH AMERICAN TOB":24.54,"PATAGONIA SUNRISE":95.48,"BACOLI":50,"FORMAGGE QUESOS":91.13,"FRIGORIFICO MAXIMO":75,"PRITTY SA":94.67,"CEREALKO":76.9,"MERCADO DE CARNES":100,"DE LA FAMILIA":88.02,"CABRA SRL":89.65,"GRUPO POPULAR":100,"LUVIK S.A.":40.1,"LOGAX SRL":92.7,"BAT CORDOBA":95.37,"BABASAL":76.83,"FABRICA DE PAN":84.06,"ENERGIZER":76.92,"MANAOS":99.91,"BALANCE FEEDS":97.21,"GIL GASTON":100,"CACHAFAZ.":99.51,"MOLFINO HNOS SA":85.45,"GRUPO AYUDIN":90.41,"WAPI":58.06,"CHARQUIQUI":96.67};
+const DOI16={"GRANDWICH":2.45,"ARTESANOS DEL MAR":59,"RAZ":14.82,"PERNOD RICARD":84.92,"ILKO ARGENTINA S A":61.83,"EGGS HONS (BLANCOS)":2.36,"DELIDIPS S.A.S":20.86,"HAULANI":22.32,"PHILIP MORRIS":17.73,"LEANDRO MARTELLETTI":1.61,"MONDELEZ ARGENTINA":20.28,"NORTON":34.33,"RECKITT":61.69,"LOS 5 HISPANOS":38.06,"FEMSA COCA COLA CD":14.9,"CAGNOLI S.A.":24.51,"NOT CO":65.82,"REGINALD LEE S.A.":8.07,"RECKITT HEALTH":91.66,"LOREAL ARGENTINA SA":58.37,"LE BANANA":16.35,"PENAFLOR VINOS":51.58,"NECHO":50.83,"SOFTYS":20.31,"SC JHONSON":119.15,"GOLOMAX":15.45,"PALTA SAGRADA":0.91,"CASERO Y NATURAL":1.61,"MASTELLONE HERMANOS":2.18,"ARCOR S.A.I.C.":40.62,"MOLINOS RIO":54.12,"NESTLE FOODS":35.09,"DDS":72.86,"SPEED ARGENTINA":26.42,"BAGLEY ARGENTINA SA":39.86,"NATURALES NAT FOODS":97.03,"ONNEG":31.67,"PALADINI":4.51,"QUICK FOOD":28.18,"UNILEVER":49.67,"GRUPO CEPAS":45.11,"NUTRICIA BAGO":44.34,"FRIG LOS PRADOS":3.18,"MARS":46.6,"BRANCA":15.61,"GREEN & CO":23.87,"YAGUAR":45,"NOLY":8.68,"VILLARES":90.13,"GIO":68.17,"GEORGALOS HNOS":50.88,"BY GIRO":41.93,"DISTRIBUIDORA CBGB":36.8,"MAXX PRESERVATIVOS":27.35,"UNION GANADERA":38.28,"KAY YOGUR GRIEGO":4.76,"LACTÉOS LA DELFINA":18.98,"CROOPERS":52.15,"MERLIN FOODS":126.95,"UENO":4.8,"BRITISH AMERICAN TOB":16.67,"SALENTEIN":92.86,"BODEGAS CHANDON SA":43.44,"COSMICO YERBA":43.39,"BIOMAC SRL":18.01,"KALIS":13.73,"PUTRUELE":89.14,"NATY BLACHER COCINA":51.46,"LASFOR":102.92,"CARREFOUR MAXI":43.44,"DREAMCO S. A.":65.91,"LABORATORI ANDROMACO":93.72,"PURA FRUTTA":18.73,"PROCTER & GAMBLE":84.38,"PATAGONIA SUNRISE":1.52,"GUAPALETAS":30.98,"BACOLI":2.03,"MCCAIN":23.81,"CCU":24.36,"GRANGER":93.61,"LUIGI BOSCA":27.15,"FORMAGGE QUESOS":26.68,"CABRALES S.A.":96.74,"FRIGORIFICO MAXIMO":8.35,"PRITTY SA":34.64,"TIMBO":73.09,"MADERASA":12.65,"CEREALKO":37.43,"KO ANDINA AR":12.18,"SEMIX":61.71,"MERCADO DE CARNES":33.65,"FINCA ROSA":23.34,"DE LA FAMILIA":41.4,"CABRA SRL":44.81,"CHEALIMENTOS":47.19,"MILKAUT":28.47,"BIO-SALUD":70.96,"GRUPO POPULAR":20.33,"LUVIK S.A.":54.97,"QUILMES":15.59,"LOGAX SRL":84.95,"BAT CORDOBA":21.39,"BABASAL":54.77,"FABRICA DE PAN":10.94,"ENERGIZER":63.38,"MANAOS":6.53,"BALANCE FEEDS":33.07,"GIL GASTON":12.08,"CACHAFAZ.":46.79,"PAP S ANDRES GILES":13.58,"COLGATE":23.67,"KOPELCO":89.28,"BEIERSDORF":58.61,"GRUPO AYUDIN":82.58,"ARRIVATA":25.97,"WAPI":28.57,"CHARQUIQUI":19.15,"ECOVITA":90.04,"CANCAT PET SRL":124.85,"BENEVIA S.R.L.":17.32,"FRIGOR":30.56,"FREDDO SA":20.96,"TRONADOR SA":18.49,"MOLINOS ALA":15.75};
 
-// Build current week (16) data
-const swaW16=[
-["ARCOR S.A.I.C.",91.95,93.1],["ARRIVATA",95.57,91.3],["ARTESANOS DEL MAR",98.57,97.76],["BABASAL",96.27,95.69],["BACOLI",55.32,54.29],["BAGLEY ARGENTINA SA",96.28,96.69],["BALANCE FEEDS",37.68,32.81],["BAT CORDOBA",95.11,95.91],["BAT GBA",57.13,50.21],["BAT MAR DEL PLATA",50,26.43],["BAT MORON",91.09,71.94],["BEIERSDORF",95.49,95.57],["BENEVIA S.R.L.",79.87,71.96],["BIMBO",87.54,92.19],["BIO-SALUD",80.93,92.38],["BIOMAC SRL",90.24,88.57],["BKL S.A.",93.08,null],["BODEGAS CHANDON SA",58.92,49.51],["BOGS S.A.",43.69,63.17],["BRANCA",98.28,96.39],["BRITISH AMERICAN TOB",87.86,93.25],["BUHL SA",60.52,45.11],["BY GIRO",96.92,96.78],["CABRA SRL",93.47,97.9],["CABRALES S.A.",96.8,96.45],["CACHAFAZ.",81.51,97.06],["CAGNOLI S.A.",96.32,94.43],["CANCAT PET SRL",99.7,99.42],["CARREFOUR MAXI",68.3,81.77],["CASERO Y NATURAL",80.77,82.11],["CCU",96.82,99.46],["CEREALKO",94.19,97.76],["CHARQUIQUI",92.78,92.78],["CHEALIMENTOS",43.13,27.97],["CITRIC",98.42,99.27],["COLGATE",88.21,91.84],["CONYNTRA S.A.",68.25,84.17],["COSMICO YERBA",85.53,95.55],["CROOPERS",93.28,90.68],["DANONE ARGENTINA SA",88.81,95.98],["DDS",83.8,81.1],["DE LA FAMILIA",97.41,95.6],["DELIDIPS S.A.S",93.18,98.29],["DISTRIBUIDORA CBGB",93.12,96.31],["DOU FOODS",96.42,100],["DREAMCO S. A.",83.45,85.52],["ECOVITA",96.79,96.99],["EGGS HONS (BLANCOS)",60.91,86.37],["ENERGIZER",96.44,95.54],["EST LAS MARIAS",69.04,72.41],["FABRICA DE PAN",76.4,81.38],["FEMSA COCA COLA CD",92.63,97.95],["FINCA ROSA",95.52,92.54],["FORMAGGE QUESOS",96.49,97.6],["FREDDO SA",84.41,81.6],["FRIG LOS PRADOS",83.85,83.71],["FRIGOR",93.19,93.7],["FRIGORIFICO MAXIMO",56.77,61.54],["GEORGALOS HNOS",94.57,98.73],["GIL GASTON",100,100],["GIO",99.13,98.32],["GOLOMAX",93.61,96.75],["GRANDWICH",83.34,87.84],["GRANGER",99.06,98.63],["GREEN & CO",88.94,93.56],["GRUPO AYUDIN",72.02,87.56],["GRUPO CEPAS",94.56,94.53],["GRUPO POPULAR",100,100],["GUAPALETAS",85.67,83.36],["HAULANI",81.45,76.54],["HOLSOM",66.17,54.9],["ILKO ARGENTINA S A",95.91,98.69],["ILOAY",35.64,62.72],["IMP SUDAMERICANA",95.41,95.56],["KALIS",95,98.71],["KARINAT",98.3,98.89],["KAY YOGUR GRIEGO",86.58,90.27],["KENVUE",63.1,80.73],["KO ANDINA AR",97.98,97.16],["KOPELCO",98.24,94.5],["LA VIRGINIA S.A.",98.61,98.25],["LABORATORI ANDROMACO",81.82,76.07],["LABORATORIO ENA",90.24,76.45],["LACTÉOS LA DELFINA",81.65,91.43],["LASFOR",98.66,97.99],["LE BANANA",98.17,97.78],["LEANDRO MARTELLETTI",75.79,90.93],["LOGAX SRL",95.96,93.76],["LOREAL ARGENTINA SA",78.23,87.18],["LOS 5 HISPANOS",97.59,97.83],["LUIGI BOSCA",97.72,97.34],["LUVIK S.A.",81.01,78.04],["MADERASA",93.81,92.29],["MANAOS",63.58,42.46],["MARS",99.02,99.07],["MASTELLONE HERMANOS",89.32,96.31],["MAXX PRESERVATIVOS",76.35,79.51],["MCCAIN",95.15,94.1],["MERCADO DE CARNES",94.79,63.12],["MERLIN FOODS",99,99.48],["MILKAUT",81.87,86.88],["MOLFINO HNOS SA",73.77,66.64],["MOLINOS ALA",76.47,74.85],["MOLINOS RIO",94.48,95.36],["MONDELEZ ARGENTINA",82.84,93.76],["MOSQUITA MUERTA",99.51,99.61],["MOSTO DISTRIBUCIONES",0,0],["NATURA COSMETICOS",98.61,98.17],["NATURALES NAT FOODS",99.5,98.73],["NATY BLACHER COCINA",93.43,95.73],["NECHO",95.08,96.41],["NESTLE FOODS",92.36,81.17],["NOLY",92.05,91.27],["NORTON",92.33,98.12],["NOT CO",99.35,99.24],["NUTRICIA BAGO",92.71,85.9],["ONNEG",93.64,95.03],["PALADINI",59.22,40.4],["PALTA SAGRADA",63.76,86.72],["PAP S ANDRES GILES",98.06,99.33],["PATAGONIA SUNRISE",65.83,89.59],["PENAFLOR VINOS",95.83,95.7],["PEPSICO ARGENTINA",97.57,98.54],["PERNOD RICARD",98.58,98.13],["PHILIP MORRIS",96.24,98.27],["PIZZA ZEN",90.11,87.99],["PRITTY SA",92.51,97.74],["PROCTER & GAMBLE",97.37,96.98],["PURA FRUTTA",93.9,93.61],["PUTRUELE",95.85,94.79],["QUICK FOOD",94.77,93.19],["QUILMES",97.7,98.33],["QUUZ",95.45,84.16],["RAZ",94.49,96.61],["RECKITT",95.68,98.33],["RECKITT HEALTH",94.32,94.49],["REGINALD LEE S.A.",99.1,99.54],["SALENTEIN",91.48,88.21],["SC JHONSON",98.31,97.72],["SEMIX",90.89,96.88],["SOFTYS",95.71,97.37],["SPEED ARGENTINA",91.51,98.87],["SUEÑO VERDE",77.11,80.18],["TELEFONICA",82,61.16],["TERAPIA PICANTE",77.73,82.89],["TF CARNES S.A.",100,100],["TIMBO",99.09,99.51],["TONADITA",46.46,68.72],["TREGAR",96.8,98.31],["TRONADOR SA",99.15,99.37],["UENO",77.92,83.39],["UNILEVER",94.95,95.16],["UNION GANADERA",93.76,92.46],["VAJUAN S.A.S.",90.97,82.69],["VILLARES",97.95,98.31],["WAPI",93.06,90.44],["YAGUAR",75.7,89.91]];
-
-// Build ID→sfname map from FR data
-const idToSfName={};
-const frRawIds=[35,47,59,61,68,71,73,81,82,84,85,88,90,93,96,100,101,102,104,106,116,122,127,129,133,136,138,141,143,145,150,152,153,157,158,159,160,162,163,165,331,333,334,337,338,340,341,342,343,368,371,373,374,375,376,377,379,380,383,392,397,402,433,448,453,458,463,465,474,477,479,482,484,488,489,501,508,518,522,529,551,555,556,560,563,582,589,591,601,602,607,612,613,618,622,629,643,644,645,647,648,649,653,654,655,663,666,668,671,672,675,676,678,683,687,688,691,694,696,700,701,705,706,715,722,728,733,743,744,745,747,748,749,750,753,754,756,759,760,761,769,777,781,782,783,789,791,797];
-
-function findId(sfName){
-  const up=sfName.toUpperCase();
-  for(const[id,d]of Object.entries(idMap)){if(d.toUpperCase()===up)return parseInt(id);}
-  for(const[id,d]of Object.entries(idMap)){if(up.length>4&&(d.toUpperCase().startsWith(up.slice(0,6))||up.startsWith(d.toUpperCase().slice(0,6))))return parseInt(id);}
-  return null;
-}
-
-// Build suppliers list
-const suppliers=swaW16.map(([sfName,avl,swa])=>{
-  const id=findId(sfName);
-  const fr=id!==null?(frHist[id]?frHist[id][16]??null:null):null;
-  const doi=id!==null?(doiById[id]??null):null;
-  return{id,name:id?idMap[id]:sfName,sfName,avl,swa,fr,doi,swaHist:id&&swaBySupp[sfName]?swaBySupp[sfName]:null,frHist:id&&frHist[id]?frHist[id]:null};
-});
-
-function st(v,tgt,hi){
-  if(v===null||v===undefined)return'none';
-  const n=parseFloat(v);
-  if(hi)return n>=tgt?'ok':n>=tgt*.9?'warn':'crit';
-  return n<=tgt?'ok':n<=tgt*1.1?'warn':'crit';
-}
-function ov(s){
-  const ss=[st(s.swa,T.SWA,true),st(s.avl,T.AVL,true),st(s.fr,T.FR,true),st(s.doi,T.DOI,false)].filter(x=>x!=='none');
-  if(ss.includes('crit'))return'crit';if(ss.includes('warn'))return'warn';if(!ss.length)return'none';return'ok';
-}
-function bdg(s){
-  const m={ok:'b-ok',warn:'b-warn',crit:'b-crit',none:'b-none'},l={ok:'OK',warn:'Alerta',crit:'Crítico',none:'Sin datos'},d={ok:'d-ok',warn:'d-warn',crit:'d-crit',none:'d-none'};
-  return`<span class="badge ${m[s]}"><span class="dot ${d[s]}"></span>${l[s]}</span>`;
-}
-function nv(v,tgt,hi,d=1){
-  if(v===null||v===undefined)return'<span class="n-none">—</span>';
-  return`<span class="n-${st(v,tgt,hi)}">${parseFloat(v).toFixed(d)}</span>`;
-}
+function st(v,tgt,hi){if(v===null||v===undefined)return'none';const n=parseFloat(v);if(hi)return n>=tgt?'ok':n>=tgt*.9?'warn':'crit';return n<=tgt?'ok':n<=tgt*1.1?'warn':'crit';}
+function ov(avl,swa,fr,doi){const ss=[st(swa,T_SWA,true),st(avl,T_AVL,true),st(fr,T_FR,true),st(doi,T_DOI,false)].filter(x=>x!=='none');if(ss.includes('crit'))return'crit';if(ss.includes('warn'))return'warn';if(!ss.length)return'none';return'ok';}
+function bdg(s){const m={ok:'b-ok',warn:'b-warn',crit:'b-crit',none:'b-none'},l={ok:'OK',warn:'Alerta',crit:'Crítico',none:'Sin datos'},d={ok:'d-ok',warn:'d-warn',crit:'d-crit',none:'d-none'};return`<span class="badge ${m[s]}"><span class="dot ${d[s]}"></span>${l[s]}</span>`;}
+function nv(v,tgt,hi,d=1){if(v===null||v===undefined)return'<span class="n-none">—</span>';return`<span class="n-${st(v,tgt,hi)}">${parseFloat(v).toFixed(d)}</span>`;}
 
 function renderCards(){
-  const avg=a=>a.filter(v=>v!==null).reduce((x,y)=>x+y,0)/Math.max(1,a.filter(v=>v!==null).length);
-  const kpis=[{l:'SWA',v:avg(suppliers.map(s=>s.swa)),t:T.SWA,hi:true,s:'%',src:'Snowflake W16'},{l:'AVL',v:avg(suppliers.map(s=>s.avl)),t:T.AVL,hi:true,s:'%',src:'Snowflake W16'},{l:'FR',v:avg(suppliers.filter(s=>s.fr!==null).map(s=>s.fr)),t:T.FR,hi:true,s:'%',src:'Snowflake'},{l:'DOI',v:avg(suppliers.filter(s=>s.doi!==null).map(s=>s.doi)),t:T.DOI,hi:false,s:' días',src:'Excel'}];
+  const supps=ALL_SUPPS.filter(n=>W16[n]);
+  const avls=supps.map(n=>W16[n][0]).filter(v=>v!==null);
+  const swas=supps.map(n=>W16[n][1]).filter(v=>v!==null);
+  const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+  const kpis=[{l:'SWA',v:avg(swas),t:T_SWA,hi:true,s:'%',src:'Snowflake W16'},{l:'AVL',v:avg(avls),t:T_AVL,hi:true,s:'%',src:'Snowflake W16'},{l:'FR',v:avg(Object.values(FR16)),t:T_FR,hi:true,s:'%',src:'Snowflake'},{l:'DOI',v:avg(Object.values(DOI16)),t:T_DOI,hi:false,s:' días',src:'Excel'}];
   document.getElementById('kpiCards').innerHTML=kpis.map(k=>{const s=st(k.v,k.t,k.hi);return`<div class="kc ${s==='none'?'':s}"><div class="kc-lbl">${k.l}</div><div class="kc-val ${s==='none'?'none':s}">${k.v!==null?k.v.toFixed(1)+k.s:'—'}</div><div class="kc-sub">Target: ${k.t}${k.s} · ${k.src}</div></div>`;}).join('');
-  const c={ok:0,warn:0,crit:0};suppliers.forEach(s=>{const o=ov(s);if(c[o]!==undefined)c[o]++;});
-  document.getElementById('pillRow').innerHTML=`<div class="pill"><span class="dot d-ok"></span><span style="color:var(--ok)">${c.ok} OK</span></div><div class="pill"><span class="dot d-warn"></span><span style="color:var(--warn)">${c.warn} alerta</span></div><div class="pill"><span class="dot d-crit"></span><span style="color:var(--rappi)">${c.crit} críticos</span></div><div class="pill" style="color:var(--txt2)">${suppliers.length} proveedores</div>`;
+  const c={ok:0,warn:0,crit:0};
+  supps.forEach(n=>{const[avl,swa]=W16[n];const o=ov(avl,swa,FR16[n]??null,DOI16[n]??null);if(c[o]!==undefined)c[o]++;});
+  document.getElementById('pillRow').innerHTML=`<div class="pill"><span class="dot d-ok"></span><span style="color:var(--ok)">${c.ok} OK</span></div><div class="pill"><span class="dot d-warn"></span><span style="color:var(--warn)">${c.warn} alerta</span></div><div class="pill"><span class="dot d-crit"></span><span style="color:var(--rappi)">${c.crit} críticos</span></div><div class="pill" style="color:var(--txt2)">${supps.length} proveedores</div>`;
 }
 
 function renderCrit(){
-  const rows=suppliers.filter(s=>st(s.swa,T.SWA,true)!=='ok'||st(s.avl,T.AVL,true)!=='ok').sort((a,b)=>{const w={crit:0,warn:1,ok:2,none:3};return w[ov(a)]-w[ov(b)];});
-  document.getElementById('critBody').innerHTML=rows.map(s=>`<tr><td><span class="id-tag">${s.id??'—'}</span></td><td title="${s.sfName}">${s.name}</td><td>${nv(s.swa,T.SWA,true)}</td><td>${nv(s.avl,T.AVL,true)}</td><td>${nv(s.fr,T.FR,true)}</td><td>${nv(s.doi,T.DOI,false,1)}</td><td>${bdg(ov(s))}</td></tr>`).join('');
+  const rows=ALL_SUPPS.filter(n=>{if(!W16[n])return false;const[avl,swa]=W16[n];return st(swa,T_SWA,true)!=='ok'||st(avl,T_AVL,true)!=='ok';}).map(n=>{const[avl,swa]=W16[n];const fr=FR16[n]??null,doi=DOI16[n]??null;return{n,avl,swa,fr,doi,o:ov(avl,swa,fr,doi)};}).sort((a,b)=>{const w={crit:0,warn:1,ok:2,none:3};return w[a.o]-w[b.o];});
+  document.getElementById('critBody').innerHTML=rows.map(r=>`<tr><td style="font-weight:500">${r.n}</td><td>${nv(r.swa,T_SWA,true)}</td><td>${nv(r.avl,T_AVL,true)}</td><td>${nv(r.fr,T_FR,true)}</td><td>${nv(r.doi,T_DOI,false,1)}</td><td>${bdg(r.o)}</td></tr>`).join('');
 }
 
-let rows=[];
-function buildRows(){rows=suppliers.map(s=>({s,o:ov(s)}));filt();}
-function filt(){
-  const q=document.getElementById('srch').value.toLowerCase(),f=document.getElementById('fst').value;
-  const filtered=rows.filter(({s,o})=>(!q||s.name.toLowerCase().includes(q)||(s.id&&String(s.id).includes(q)))&&(!f||o===f));
-  document.getElementById('clbl').textContent=`${filtered.length} de ${suppliers.length}`;
-  document.getElementById('mainBody').innerHTML=filtered.map(({s,o})=>`<tr><td><span class="id-tag">${s.id??'—'}</span></td><td title="${s.sfName}"><span class="dot d-${o}" style="margin-right:5px"></span>${s.name}</td><td>${nv(s.swa,T.SWA,true)}</td><td>${nv(s.avl,T.AVL,true)}</td><td>${nv(s.fr,T.FR,true)}</td><td>${nv(s.doi,T.DOI,false,1)}</td><td>${bdg(o)}</td></tr>`).join('');
-}
+let allRows=[];
+function buildRows(){allRows=ALL_SUPPS.filter(n=>W16[n]).map(n=>{const[avl,swa]=W16[n];const fr=FR16[n]??null,doi=DOI16[n]??null;return{n,avl,swa,fr,doi,o:ov(avl,swa,fr,doi)};});filt();}
+function filt(){const q=document.getElementById('srch').value.toLowerCase(),f=document.getElementById('fst').value;const filtered=allRows.filter(r=>(!q||r.n.toLowerCase().includes(q))&&(!f||r.o===f));document.getElementById('clbl').textContent=filtered.length+' de '+allRows.length;document.getElementById('mainBody').innerHTML=filtered.map(r=>`<tr><td style="font-weight:500"><span class="dot d-${r.o}" style="margin-right:5px"></span>${r.n}</td><td>${nv(r.swa,T_SWA,true)}</td><td>${nv(r.avl,T_AVL,true)}</td><td>${nv(r.fr,T_FR,true)}</td><td>${nv(r.doi,T_DOI,false,1)}</td><td>${bdg(r.o)}</td></tr>`).join('');}
 
-// ── CHART ────────────────────────────────────────────────────────────────────
-const kpiActive={swa:true,avl:true,fr:true};
-let chart=null;
-
-function toggleKPI(k){
-  kpiActive[k]=!kpiActive[k];
-  const el=document.getElementById('tog-'+k);
-  el.className='ktog'+(kpiActive[k]?' active-'+k:'');
-  renderChart();
-}
-
-function renderChart(){
-  const selName=document.getElementById('suppSel').value;
-  if(!selName){if(chart){chart.destroy();chart=null;}return;}
-
-  // Find supplier
-  const s=suppliers.find(x=>x.sfName===selName||x.name===selName);
-  if(!s){return;}
-
-  const swaData=WEEKS.map(w=>s.swaHist&&s.swaHist[w]?s.swaHist[w].swa:null);
-  const avlData=WEEKS.map(w=>s.swaHist&&s.swaHist[w]?s.swaHist[w].avl:null);
-  const frData=WEEKS.map(w=>s.frHist&&s.frHist[w]!==undefined?s.frHist[w]:null);
-
+function togKPI(k){kpiOn[k]=!kpiOn[k];document.getElementById('tog-'+k).className='ktog'+(kpiOn[k]?' on-'+k:'');if(curSupp)renderChart(curSupp);}
+function renderChart(name){
+  curSupp=name;const wdata=H[name];if(!wdata)return;
+  const avlD=WEEKS.map(w=>wdata[String(w)]?wdata[String(w)][0]:null);
+  const swaD=WEEKS.map(w=>wdata[String(w)]?wdata[String(w)][1]:null);
   const datasets=[];
-  if(kpiActive.swa) datasets.push({label:'SWA %',data:swaData,borderColor:'#3b82f6',backgroundColor:'#3b82f620',pointBackgroundColor:'#3b82f6',pointRadius:4,tension:.35,spanGaps:true});
-  if(kpiActive.avl) datasets.push({label:'AVL %',data:avlData,borderColor:'#a855f7',backgroundColor:'#a855f720',pointBackgroundColor:'#a855f7',pointRadius:4,tension:.35,spanGaps:true});
-  if(kpiActive.fr)  datasets.push({label:'FR %',data:frData,borderColor:'#f97316',backgroundColor:'#f9731620',pointBackgroundColor:'#f97316',pointRadius:4,tension:.35,spanGaps:true});
-
-  // Target lines
-  if(kpiActive.swa) datasets.push({label:`Target SWA (${T.SWA}%)`,data:WEEKS.map(()=>T.SWA),borderColor:'#3b82f660',borderDash:[6,4],pointRadius:0,borderWidth:1.5,spanGaps:true});
-  if(kpiActive.avl) datasets.push({label:`Target AVL (${T.AVL}%)`,data:WEEKS.map(()=>T.AVL),borderColor:'#a855f760',borderDash:[6,4],pointRadius:0,borderWidth:1.5,spanGaps:true});
-  if(kpiActive.fr)  datasets.push({label:`Target FR (${T.FR}%)`,data:WEEKS.map(()=>T.FR),borderColor:'#f9731660',borderDash:[6,4],pointRadius:0,borderWidth:1.5,spanGaps:true});
-
-  if(chart){chart.destroy();}
-  const ctx=document.getElementById('evoChart').getContext('2d');
-  chart=new Chart(ctx,{
-    type:'line',
-    data:{labels:WLABELS,datasets},
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{display:false},
-        title:{display:true,text:s.name,color:'#f0f0f0',font:{size:13,weight:'500'},padding:{bottom:8}},
-        tooltip:{
-          backgroundColor:'#222',borderColor:'#333',borderWidth:1,
-          titleColor:'#f0f0f0',bodyColor:'#aaa',
-          callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y!==null?ctx.parsed.y.toFixed(1)+'%':'—'}`}
-        }
-      },
-      scales:{
-        x:{ticks:{color:'#666',font:{size:10}},grid:{color:'#252525'}},
-        y:{min:0,max:100,ticks:{color:'#666',font:{size:10},callback:v=>v+'%'},grid:{color:'#252525'}}
-      }
-    }
-  });
+  if(kpiOn.swa)datasets.push({label:'SWA %',data:swaD,borderColor:'#3b82f6',pointBackgroundColor:'#3b82f6',pointRadius:4,tension:.35,spanGaps:true,borderWidth:2});
+  if(kpiOn.avl)datasets.push({label:'AVL %',data:avlD,borderColor:'#a855f7',pointBackgroundColor:'#a855f7',pointRadius:4,tension:.35,spanGaps:true,borderWidth:2});
+  if(kpiOn.swa)datasets.push({label:'Target SWA',data:WEEKS.map(()=>T_SWA),borderColor:'#3b82f650',borderDash:[6,4],pointRadius:0,borderWidth:1.5,spanGaps:true});
+  if(kpiOn.avl)datasets.push({label:'Target AVL',data:WEEKS.map(()=>T_AVL),borderColor:'#a855f750',borderDash:[6,4],pointRadius:0,borderWidth:1.5,spanGaps:true});
+  if(chart)chart.destroy();
+  chart=new Chart(document.getElementById('evoChart').getContext('2d'),{type:'line',data:{labels:WLABELS,datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},title:{display:true,text:name,color:'#f0f0f0',font:{size:13,weight:'500'},padding:{bottom:6}},tooltip:{backgroundColor:'#222',borderColor:'#333',borderWidth:1,titleColor:'#f0f0f0',bodyColor:'#aaa',callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y!==null?c.parsed.y.toFixed(1)+'%':'—'}`}}},scales:{x:{ticks:{color:'#666',font:{size:10}},grid:{color:'#252525'}},y:{min:0,max:100,ticks:{color:'#666',font:{size:10},callback:v=>v+'%'},grid:{color:'#252525'}}}}});
+  document.getElementById('selLabel').textContent='Semanas W8–W16 · SWA: '+swaD.filter(v=>v!==null).length+' datos · AVL: '+avlD.filter(v=>v!==null).length+' datos';
 }
 
-// Populate supplier selector — all suppliers that have historical data
-function populateSelect(){
-  const sel=document.getElementById('suppSel');
-  // Gather all supplier names from swaHist + fr history
-  const names=new Set();
-  for(const k of Object.keys(swaBySupp)) names.add(k);
-  // Also add from suppliers list that have FR history
-  suppliers.filter(s=>s.frHist).forEach(s=>names.add(s.sfName));
-  const sorted=[...names].sort();
-  sorted.forEach(n=>{
-    const o=document.createElement('option');
-    const s=suppliers.find(x=>x.sfName===n);
-    o.value=n;o.textContent=s?s.name:n;
-    sel.appendChild(o);
-  });
-}
+function onSearch(q){const list=document.getElementById('suggList');const val=q.trim().toUpperCase();if(!val){list.style.display='none';return;}const matches=ALL_SUPPS.filter(n=>n.includes(val)).slice(0,12);if(!matches.length){list.style.display='none';return;}list.innerHTML=matches.map(n=>`<div class="sugg-item" onmousedown="selectSupp(this.dataset.name)" data-name="${n}">${n}</div>`).join('');list.style.display='block';}
+function hideSugg(){document.getElementById('suggList').style.display='none';}
+function selectSupp(name){document.getElementById('suppSearch').value=name;document.getElementById('suggList').style.display='none';renderChart(name);}
 
-// Accionables
 let accs=[];
-function addAcc(){
-  const p=document.getElementById('aP').value.trim(),t=document.getElementById('aT').value.trim();
-  if(!p||!t)return;
-  accs.unshift({id:Date.now(),prov:p,kpi:document.getElementById('aK').value,buyer:document.getElementById('aB').value.trim(),fecha:document.getElementById('aF').value,texto:t,estado:document.getElementById('aE').value});
-  ['aP','aB','aT','aF'].forEach(i=>document.getElementById(i).value='');document.getElementById('aK').value='';renderAcc();
-}
+function addAcc(){const p=document.getElementById('aP').value.trim(),t=document.getElementById('aT').value.trim();if(!p||!t)return;accs.unshift({id:Date.now(),prov:p,kpi:document.getElementById('aK').value,buyer:document.getElementById('aB').value.trim(),fecha:document.getElementById('aF').value,texto:t,estado:document.getElementById('aE').value});['aP','aB','aT','aF'].forEach(i=>document.getElementById(i).value='');document.getElementById('aK').value='';renderAcc();}
 const eL={pendiente:'Pendiente',progreso:'En progreso',cumplido:'Cumplido',vencido:'Vencido'};
-function renderAcc(){
-  const el=document.getElementById('accList');
-  if(!accs.length){el.innerHTML='<div class="empty">Sin accionables. Agregá uno con el formulario.</div>';return;}
-  el.innerHTML=accs.map(a=>`<div class="acc-item">${a.kpi?`<div class="kpi-tag">${a.kpi}</div>`:''}<div class="acc-body"><div class="acc-name">${a.prov}</div><div class="acc-txt">${a.texto}</div><div class="acc-meta">${[a.buyer?'Buyer: '+a.buyer:'',a.fecha?'Límite: '+a.fecha:''].filter(Boolean).join(' · ')}</div></div><div class="acc-side"><select onchange="chE(${a.id},this.value)">${Object.entries(eL).map(([v,l])=>`<option value="${v}" ${a.estado===v?'selected':''}>${l}</option>`).join('')}</select><span class="acc-del" onclick="delA(${a.id})">Eliminar</span></div></div>`).join('');
-}
+function renderAcc(){const el=document.getElementById('accList');if(!accs.length){el.innerHTML='<div class="empty">Sin accionables. Agregá uno con el formulario.</div>';return;}el.innerHTML=accs.map(a=>`<div class="acc-item">${a.kpi?`<div class="kpi-tag">${a.kpi}</div>`:''}<div class="acc-body"><div class="acc-name">${a.prov}</div><div class="acc-txt">${a.texto}</div><div class="acc-meta">${[a.buyer?'Buyer: '+a.buyer:'',a.fecha?'Límite: '+a.fecha:''].filter(Boolean).join(' · ')}</div></div><div class="acc-side"><select onchange="chE(${a.id},this.value)">${Object.entries(eL).map(([v,l])=>`<option value="${v}" ${a.estado===v?'selected':''}>${l}</option>`).join('')}</select><span class="acc-del" onclick="delA(${a.id})">Eliminar</span></div></div>`).join('');}
 function chE(id,v){const a=accs.find(x=>x.id===id);if(a){a.estado=v;renderAcc();}}
 function delA(id){accs=accs.filter(x=>x.id!==id);renderAcc();}
-function sw(name){
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['resumen','evolucion','proveedores','accionables'][i]===name));
-  document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('active',s.id==='tab-'+name));
-}
+function sw(name){document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['resumen','evolucion','proveedores','accionables'][i]===name));document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('active',s.id==='tab-'+name));}
 
-document.getElementById('supList').innerHTML=suppliers.map(s=>`<option value="${s.name}">`).join('');
+document.getElementById('supList').innerHTML=ALL_SUPPS.map(n=>`<option value="${n}">`).join('');
 document.getElementById('ts').textContent=new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-
-populateSelect();
 renderCards();renderCrit();buildRows();renderAcc();
+
 </script>
 </body>
 </html>
